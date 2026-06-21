@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding Guide — Learn Web Dev Like a Pro</title>
+<meta name="description" content="The ultimate beginner's guide to web development — UI styles, UX patterns, animations, SEO, hosting, GitHub, and more. 50+ concepts explained.">
+<meta property="og:title" content="Vibe Coding Guide">
+<meta property="og:description" content="50+ web dev concepts explained with visual examples for beginners.">
+<meta property="og:image" content="https://wondermayank.github.io/og-image.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #573AFC;
+    --purple-light: #7B5FFF;
+    --purple-dim: rgba(87,58,252,0.12);
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a26;
+    --card: #13131e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(87,58,252,0.3);
+    --text: #f0f0ff;
+    --muted: #8888aa;
+    --accent: #a78bfa;
+    --green: #4ade80;
+    --yellow: #fbbf24;
+    --pink: #f472b6;
+    --cyan: #22d3ee;
+    --orange: #fb923c;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  code, pre { font-family: 'Fira Code', monospace; }
+
+  /* LOADING */
+  #loader {
+    position: fixed; inset: 0; z-index: 9999;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1.5rem;
+    transition: opacity 0.6s ease;
+  }
+  #loader.hide { opacity: 0; pointer-events: none; }
+  .loader-logo {
+    font-size: 4rem;
+    animation: bounce 1s ease infinite alternate;
+  }
+  .loader-bar {
+    width: 200px; height: 3px;
+    background: var(--bg3);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .loader-fill {
+    height: 100%; width: 0%;
+    background: linear-gradient(90deg, var(--purple), var(--accent));
+    border-radius: 99px;
+    animation: load 1.8s ease forwards;
+  }
+  .loader-text { font-size: 0.85rem; color: var(--muted); letter-spacing: 2px; }
+  @keyframes load { to { width: 100%; } }
+  @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-logo { font-weight: 800; font-size: 1.1rem; color: var(--accent); }
+  .nav-links { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+  .nav-links a {
+    font-size: 0.75rem; color: var(--muted);
+    padding: 6px 12px; border-radius: 99px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); background: var(--bg3); }
+
+  /* HERO */
+  .hero {
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(87,58,252,0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.75rem; letter-spacing: 2px;
+    color: var(--accent);
+    background: var(--purple-dim);
+    border: 1px solid var(--border2);
+    padding: 6px 16px; border-radius: 99px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+  }
+  .hero p {
+    font-size: 1.15rem; color: var(--muted);
+    max-width: 600px; margin: 0 auto 2rem;
+  }
+  .hero-stats {
+    display: flex; gap: 2rem;
+    justify-content: center; flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); }
+
+  /* MAIN LAYOUT */
+  main { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 5rem;
+    scroll-margin-top: 80px;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: var(--purple-dim);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 1.5rem; font-weight: 700; }
+  .section-subtitle { font-size: 0.85rem; color: var(--muted); }
+
+  /* CARDS GRID */
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(87,58,252,0.15);
+  }
+  .card-emoji { font-size: 1.5rem; margin-bottom: 0.75rem; }
+  .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; }
+  .card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.7rem; font-weight: 600;
+    padding: 3px 10px; border-radius: 99px;
+    margin-top: 0.75rem;
+    letter-spacing: 0.5px;
+  }
+  .tag-purple { background: var(--purple-dim); color: var(--accent); border: 1px solid var(--border2); }
+  .tag-green { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.25); }
+  .tag-yellow { background: rgba(251,191,36,0.1); color: var(--yellow); border: 1px solid rgba(251,191,36,0.25); }
+  .tag-pink { background: rgba(244,114,182,0.1); color: var(--pink); border: 1px solid rgba(244,114,182,0.25); }
+  .tag-cyan { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.25); }
+  .tag-orange { background: rgba(251,146,60,0.1); color: var(--orange); border: 1px solid rgba(251,146,60,0.25); }
+
+  /* DEMO BLOCKS */
+  .demo-block {
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .demo-label {
+    position: absolute; top: 12px; right: 12px;
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 1px;
+    color: var(--muted); background: var(--bg3);
+    padding: 4px 10px; border-radius: 99px;
+    border: 1px solid var(--border);
+  }
+
+  /* GLASS UI DEMO */
+  .glass-demo {
+    background: linear-gradient(135deg, #1a1040, #0f0a2e);
+    min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+  .glass-card {
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    min-width: 160px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .glass-card h4 { font-size: 0.85rem; color: rgba(255,255,255,0.9); }
+  .glass-card p { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-top: 4px; }
+  .glass-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  /* CLAY DEMO */
+  .clay-demo {
+    background: #f0e6ff;
+    min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.5rem; flex-wrap: wrap;
+  }
+  .clay-card {
+    background: linear-gradient(145deg, #d4aaff, #b088ff);
+    border-radius: 24px;
+    padding: 1.5rem 2rem;
+    box-shadow:
+      8px 8px 20px rgba(100,50,200,0.35),
+      -4px -4px 10px rgba(255,255,255,0.7),
+      inset 2px 2px 5px rgba(255,255,255,0.3),
+      inset -2px -2px 5px rgba(100,50,200,0.2);
+    text-align: center; min-width: 130px;
+    color: #2d0070;
+  }
+  .clay-card h4 { font-size: 0.85rem; font-weight: 700; }
+  .clay-btn {
+    background: linear-gradient(145deg, #a78bfa, #7c3aed);
+    border: none; border-radius: 14px;
+    padding: 12px 24px;
+    color: white; font-weight: 700; font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow:
+      5px 5px 12px rgba(100,50,200,0.4),
+      -3px -3px 8px rgba(255,255,255,0.6),
+      inset 1px 1px 3px rgba(255,255,255,0.3);
+  }
+
+  /* NEUMORPHISM DEMO */
+  .neu-demo {
+    background: #e0e5ec;
+    min-height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 1.5rem;
+  }
+  .neu-card {
+    background: #e0e5ec;
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    box-shadow: 8px 8px 16px #b8bec7, -8px -8px 16px #ffffff;
+    color: #444;
+    text-align: center;
+  }
+  .neu-card h4 { font-size: 0.85rem; font-weight: 600; }
+
+  /* CODE BLOCK */
+  .code-block {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    position: relative;
+  }
+  .code-block .kw { color: #ff7b72; }
+  .code-block .str { color: #a5d6ff; }
+  .code-block .fn { color: #d2a8ff; }
+  .code-block .cm { color: #8b949e; font-style: italic; }
+  .code-block .val { color: #79c0ff; }
+  .code-block .tag { color: #7ee787; }
+  .code-block .attr { color: #ffa657; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 1rem; }
+  .step {
+    display: flex; gap: 1rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem;
+    align-items: flex-start;
+    transition: all 0.2s;
+  }
+  .step:hover { border-color: var(--border2); }
+  .step-num {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--purple-dim);
+    border: 1px solid var(--border2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; font-weight: 700; color: var(--accent);
+  }
+  .step-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .step-content p { font-size: 0.8rem; color: var(--muted); }
+  .step-content code {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 0.78rem;
+    color: var(--cyan);
+    display: inline-block; margin-top: 6px;
+  }
+
+  /* COMPARE TABLE */
+  .compare-table { width: 100%; border-collapse: collapse; }
+  .compare-table th {
+    background: var(--bg3);
+    color: var(--accent);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border2);
+  }
+  .compare-table td {
+    padding: 10px 16px;
+    font-size: 0.82rem; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:hover td { background: var(--bg3); color: var(--text); }
+
+  /* BIG PILL */
+  .pill-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  .pill {
+    font-size: 0.75rem; font-weight: 500;
+    padding: 6px 14px; border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--card);
+    transition: all 0.2s;
+    cursor: default;
+  }
+  .pill:hover { border-color: var(--border2); color: var(--accent); background: var(--purple-dim); }
+
+  /* ANIMATION DEMO */
+  .anim-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .anim-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+  }
+  .anim-box:hover { border-color: var(--border2); }
+  .anim-icon {
+    width: 48px; height: 48px;
+    background: var(--purple-dim);
+    border-radius: 12px;
+    margin: 0 auto 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .anim-box h4 { font-size: 0.85rem; font-weight: 600; }
+  .anim-box p { font-size: 0.72rem; color: var(--muted); margin-top: 4px; }
+
+  /* HOVER ANIMATIONS ON BOXES */
+  .anim-fade:hover .anim-icon { animation: fadeInOut 1s ease infinite; }
+  .anim-slide:hover .anim-icon { animation: slideIn 0.6s ease infinite alternate; }
+  .anim-bounce2:hover .anim-icon { animation: bounceIcon 0.5s ease infinite alternate; }
+  .anim-spin:hover .anim-icon { animation: spinIcon 1s linear infinite; }
+  .anim-pulse:hover .anim-icon { animation: pulseIcon 0.8s ease infinite; }
+  .anim-shake:hover .anim-icon { animation: shakeIcon 0.3s ease infinite; }
+  @keyframes fadeInOut { 0%,100%{opacity:0.2}50%{opacity:1} }
+  @keyframes slideIn { from{transform:translateX(-8px)}to{transform:translateX(8px)} }
+  @keyframes bounceIcon { from{transform:translateY(0)}to{transform:translateY(-8px)} }
+  @keyframes spinIcon { to{transform:rotate(360deg)} }
+  @keyframes pulseIcon { 0%,100%{transform:scale(1)}50%{transform:scale(1.2)} }
+  @keyframes shakeIcon { 0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)} }
+
+  /* SEO SECTION */
+  .seo-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .seo-box h4 {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem;
+  }
+  .seo-badge {
+    font-size: 0.65rem; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 99px;
+  }
+  .seo-box p { font-size: 0.82rem; color: var(--muted); }
+
+  /* HOST CARDS */
+  .host-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .host-card:hover { border-color: var(--border2); }
+  .host-logo { font-size: 1.8rem; margin-bottom: 0.25rem; }
+  .host-name { font-size: 1rem; font-weight: 700; }
+  .host-desc { font-size: 0.8rem; color: var(--muted); }
+  .host-free {
+    font-size: 0.7rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 99px;
+    width: fit-content;
+    background: rgba(74,222,128,0.1); color: var(--green);
+    border: 1px solid rgba(74,222,128,0.25);
+  }
+
+  /* GALLERY UX DEMO */
+  .gallery-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+  .gallery-item {
+    aspect-ratio: 1;
+    border-radius: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+  }
+  .gallery-item-bg {
+    width: 100%; height: 100%;
+    transition: transform 0.3s ease;
+  }
+  .gallery-item:hover .gallery-item-bg { transform: scale(1.05); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.6);
+    opacity: 0;
+    display: flex; align-items: flex-end;
+    padding: 10px;
+    transition: opacity 0.3s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay span { font-size: 0.7rem; color: white; font-weight: 500; }
+
+  /* MASONRY DEMO */
+  .masonry-demo {
+    columns: 3; column-gap: 0.75rem;
+  }
+  .masonry-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    break-inside: avoid;
+    overflow: hidden;
+  }
+  .masonry-img {
+    width: 100%;
+    display: block;
+  }
+  .masonry-label { padding: 0.6rem 0.75rem; font-size: 0.72rem; color: var(--muted); }
+
+  /* MARQUEE */
+  .marquee-wrap { overflow: hidden; padding: 0.5rem 0; }
+  .marquee {
+    display: flex; gap: 1rem;
+    animation: marqueeScroll 20s linear infinite;
+    width: max-content;
+  }
+  .marquee-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    padding: 8px 18px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    color: var(--muted);
+  }
+  @keyframes marqueeScroll { to { transform: translateX(-50%); } }
+
+  /* QUICK TIP */
+  .tip {
+    background: rgba(87,58,252,0.08);
+    border: 1px solid rgba(87,58,252,0.2);
+    border-left: 3px solid var(--purple);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin: 1rem 0;
+  }
+  .tip strong { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    nav .nav-links { display: none; }
+    .masonry-demo { columns: 2; }
+    .gallery-demo { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">⚡</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">LOADING VIBE GUIDE</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ Vibe Coding Guide</div>
+  <div class="nav-links">
+    <a href="#ui">UI Styles</a>
+    <a href="#ux">UX Patterns</a>
+    <a href="#elements">Elements</a>
+    <a href="#languages">Languages</a>
+    <a href="#animations">Animations</a>
+    <a href="#seo">SEO/AEO/GEO</a>
+    <a href="#meta">Favicon & OG</a>
+    <a href="#hosting">Hosting</a>
+    <a href="#github">GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">50+ CONCEPTS • BEGINNER FRIENDLY</div>
+  <h1>Vibe Coding<br>Guide</h1>
+  <p>Everything a new developer needs to know — UI styles, UX patterns, animations, SEO, hosting, and GitHub — all in one place.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Concepts</div></div>
+    <div class="stat"><div class="stat-num">9</div><div class="stat-label">UI Styles</div></div>
+    <div class="stat"><div class="stat-num">12</div><div class="stat-label">Animations</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free & Open</div></div>
+  </div>
+</div>
+
+<!-- SCROLLING MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span class="marquee-item">Glass UI</span>
+    <span class="marquee-item">Claymorphism</span>
+    <span class="marquee-item">Neumorphism</span>
+    <span class="marquee-item">Brutalism</span>
+    <span class="marquee-item">Bento Grid</span>
+    <span class="marquee-item">Dark Mode</span>
+    <span class="marquee-item">Scroll Animation</span>
+    <span class="marquee-item">CSS Keyframes</span>
+    <span class="marquee-item">Flexbox</span>
+    <span class="marquee-item">CSS Grid</span>
+    <span class="marquee-item">SEO</span>
+    <span class="marquee-item">AEO</span>
+    <span class="marquee-item">GEO</span>
+    <span class="marquee-item">GitHub Pages</span>
+    <span class="marquee-item">Vercel</span>
+    <span class="marquee-item">Netlify</span>
+    <span class="marquee-item">OG Image</span>
+    <span class="marquee-item">Favicon</span>
+    <span class="marquee-item">JSON-LD</span>
+    <span class="marquee-item">Lighthouse</span>
+    <!-- dupe for seamless loop -->
+    <span class="marquee-item">Glass UI</span>
+    <span class="marquee-item">Claymorphism</span>
+    <span class="marquee-item">Neumorphism</span>
+    <span class="marquee-item">Brutalism</span>
+    <span class="marquee-item">Bento Grid</span>
+    <span class="marquee-item">Dark Mode</span>
+    <span class="marquee-item">Scroll Animation</span>
+    <span class="marquee-item">CSS Keyframes</span>
+    <span class="marquee-item">Flexbox</span>
+    <span class="marquee-item">CSS Grid</span>
+    <span class="marquee-item">SEO</span>
+    <span class="marquee-item">AEO</span>
+    <span class="marquee-item">GEO</span>
+    <span class="marquee-item">GitHub Pages</span>
+    <span class="marquee-item">Vercel</span>
+    <span class="marquee-item">Netlify</span>
+    <span class="marquee-item">OG Image</span>
+    <span class="marquee-item">Favicon</span>
+    <span class="marquee-item">JSON-LD</span>
+    <span class="marquee-item">Lighthouse</span>
+  </div>
+</div>
+
+<main>
+
+<!-- ==================== UI STYLES ==================== -->
+<section class="section" id="ui">
+  <div class="section-header">
+    <div class="section-icon">🎨</div>
+    <div>
+      <div class="section-title">Types of UI Styles</div>
+      <div class="section-subtitle">Visual design languages every web dev should know</div>
+    </div>
+  </div>
+
+  <!-- GLASS UI DEMO -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.75rem;color:var(--accent)">1. Glassmorphism</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Glass UI makes elements look like frosted glass. The magic: <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">background: rgba(255,255,255,0.05)</code> + <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">backdrop-filter: blur(20px)</code> + a subtle white border. Always needs a colorful background behind it to show the blur effect.</p>
+
+  <div class="demo-block glass-demo">
+    <div class="demo-label">GLASS UI LIVE</div>
+    <div style="position:absolute;top:-20px;left:-20px;width:180px;height:180px;background:rgba(139,92,246,0.6)" class="glass-orb"></div>
+    <div style="position:absolute;bottom:-30px;right:30px;width:150px;height:150px;background:rgba(59,130,246,0.5)" class="glass-orb"></div>
+    <div class="glass-card">
+      <div style="font-size:1.5rem;margin-bottom:8px">🌙</div>
+      <h4>Dark Glass</h4>
+      <p>Frosted panel</p>
+    </div>
+    <div class="glass-card">
+      <div style="font-size:1.5rem;margin-bottom:8px">⚡</div>
+      <h4>Glass Card</h4>
+      <p>blur + rgba</p>
+    </div>
+    <div class="glass-card">
+      <div style="font-size:1.5rem;margin-bottom:8px">💎</div>
+      <h4>Crystal</h4>
+      <p>White border</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="cm">/* Glass UI Recipe */</span>
+<span class="kw">.glass-card</span> {
+  <span class="attr">background</span>: <span class="fn">rgba</span>(<span class="val">255,255,255, 0.05</span>);
+  <span class="attr">backdrop-filter</span>: <span class="fn">blur</span>(<span class="val">20px</span>);
+  <span class="attr">-webkit-backdrop-filter</span>: <span class="fn">blur</span>(<span class="val">20px</span>);
+  <span class="attr">border</span>: <span class="val">1px solid rgba(255,255,255, 0.15)</span>;
+  <span class="attr">border-radius</span>: <span class="val">20px</span>;
+  <span class="attr">box-shadow</span>: <span class="val">0 8px 32px rgba(0,0,0,0.4)</span>;
+}
+  </div>
+
+  <!-- CLAY DEMO -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2rem 0 0.75rem;color:var(--pink)">2. Claymorphism</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Clay UI looks puffy, 3D, and soft — like actual modeling clay. The trick is layered <strong style="color:var(--text)">box-shadow</strong>: outer dark shadow + bright highlight on top + inner glow. Popular in playful apps and landing pages.</p>
+
+  <div class="demo-block clay-demo">
+    <div class="demo-label">CLAYMORPHISM LIVE</div>
+    <div class="clay-card">
+      <div style="font-size:1.5rem;margin-bottom:8px">🧸</div>
+      <h4>Clay Card</h4>
+    </div>
+    <div class="clay-card" style="background:linear-gradient(145deg,#a7f3d0,#6ee7b7);">
+      <div style="font-size:1.5rem;margin-bottom:8px">🍀</div>
+      <h4 style="color:#064e3b">Green Clay</h4>
+    </div>
+    <button class="clay-btn">Clay Button ✨</button>
+  </div>
+
+  <div class="code-block">
+<span class="cm">/* Clay UI Recipe — 4-layer shadow */</span>
+<span class="kw">.clay-card</span> {
+  <span class="attr">background</span>: <span class="fn">linear-gradient</span>(<span class="val">145deg, #d4aaff, #b088ff</span>);
+  <span class="attr">border-radius</span>: <span class="val">24px</span>;
+  <span class="attr">box-shadow</span>:
+    <span class="val">8px 8px 20px rgba(100,50,200,0.35)</span>,   <span class="cm">/* outer shadow */</span>
+    <span class="val">-4px -4px 10px rgba(255,255,255,0.7)</span>,  <span class="cm">/* top highlight */</span>
+    <span class="val">inset 2px 2px 5px rgba(255,255,255,0.3)</span>, <span class="cm">/* inner light */</span>
+    <span class="val">inset -2px -2px 5px rgba(100,50,200,0.2)</span>; <span class="cm">/* inner dark */</span>
+}
+  </div>
+
+  <!-- NEUMORPHISM -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2rem 0 0.75rem;color:var(--cyan)">3. Neumorphism (Soft UI)</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Neumorphism looks like elements are pushed out from the background. Elements share the same background color — the depth comes only from shadows. Best for light grey backgrounds.</p>
+
+  <div class="demo-block neu-demo">
+    <div class="demo-label">NEUMORPHISM LIVE</div>
+    <div class="neu-card">
+      <div style="font-size:1.5rem;margin-bottom:8px">⬛</div>
+      <h4>Soft Push</h4>
+    </div>
+    <div style="background:#e0e5ec;border-radius:50%;width:80px;height:80px;box-shadow:6px 6px 12px #b8bec7,-6px -6px 12px #ffffff;display:flex;align-items:center;justify-content:center;color:#666;font-size:1.5rem">🔊</div>
+  </div>
+
+  <!-- ===== BRUTALISM ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--orange)">4. Brutalism</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Raw, bold, no-rules design. Huge fonts, primary colors, thick black borders, zero subtlety. Think: early Craigslist, Figma's old marketing, brutalist.fyi. Everything is deliberately "ugly" in a beautiful way.</p>
+  <div class="demo-block" style="background:#fff;padding:0;overflow:hidden;border:3px solid #000">
+    <div class="demo-label" style="top:10px;right:10px">BRUTALISM LIVE</div>
+    <!-- brutalist nav -->
+    <div style="background:#ff0;border-bottom:3px solid #000;padding:10px 16px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-family:'Inter',sans-serif;font-weight:900;font-size:1rem;color:#000;letter-spacing:-1px">BRUTAL.SITE</span>
+      <div style="display:flex;gap:6px">
+        <span style="background:#000;color:#fff;font-size:0.65rem;font-weight:800;padding:4px 10px;border:2px solid #000">WORK</span>
+        <span style="background:#fff;color:#000;font-size:0.65rem;font-weight:800;padding:4px 10px;border:2px solid #000">ABOUT</span>
+      </div>
+    </div>
+    <!-- hero -->
+    <div style="padding:20px 16px 0;border-bottom:3px solid #000">
+      <div style="font-family:'Inter',sans-serif;font-size:2.8rem;font-weight:900;line-height:1;color:#000;text-transform:uppercase;letter-spacing:-2px">WE MAKE<br><span style="color:#ff0;-webkit-text-stroke:2px #000">THINGS.</span></div>
+      <p style="font-size:0.75rem;color:#000;font-weight:600;margin:10px 0 16px;max-width:260px">No fluff. No gradients. Just raw, honest design that hits you in the face.</p>
+      <button style="background:#000;color:#ff0;border:3px solid #000;padding:10px 22px;font-size:0.82rem;font-weight:900;cursor:pointer;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px">GET STARTED →</button>
+    </div>
+    <!-- bento-like blocks in brutal style -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+      <div style="border-right:3px solid #000;border-top:0;padding:12px;background:#ff0">
+        <div style="font-size:1.5rem;font-weight:900;color:#000;font-family:'Inter',sans-serif">42</div>
+        <div style="font-size:0.65rem;font-weight:800;color:#000;text-transform:uppercase">Projects</div>
+      </div>
+      <div style="border-right:3px solid #000;padding:12px;background:#fff">
+        <div style="font-size:1.5rem;font-weight:900;color:#000;font-family:'Inter',sans-serif">∞</div>
+        <div style="font-size:0.65rem;font-weight:800;color:#000;text-transform:uppercase">Ideas</div>
+      </div>
+      <div style="padding:12px;background:#000">
+        <div style="font-size:1.5rem;font-weight:900;color:#ff0;font-family:'Inter',sans-serif">1</div>
+        <div style="font-size:0.65rem;font-weight:800;color:#ff0;text-transform:uppercase">You</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-orange" style="font-size:0.72rem">NO BORDER-RADIUS</span>
+    <span class="card-tag tag-yellow" style="font-size:0.72rem">THICK BORDERS</span>
+    <span class="card-tag tag-pink" style="font-size:0.72rem">PRIMARY COLORS</span>
+    <span class="card-tag tag-cyan" style="font-size:0.72rem">BOLD TYPE</span>
+  </div>
+
+  <!-- ===== BENTO GRID ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--cyan)">5. Bento Grid</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Japanese lunchbox-style layout — cards of different sizes arranged in a mosaic grid. Made famous by Apple's WWDC pages and Linear's homepage. Key: <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">grid-template-areas</code> to define each tile's size.</p>
+  <div class="demo-block" style="background:linear-gradient(135deg,#0f0f14 0%,#161620 100%);padding:1.25rem">
+    <div class="demo-label">BENTO GRID LIVE</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto auto;gap:10px">
+      <!-- big hero tile -->
+      <div style="grid-column:1/3;grid-row:1/2;background:linear-gradient(135deg,#573AFC,#a78bfa);border-radius:18px;padding:18px 20px;position:relative;overflow:hidden;min-height:100px">
+        <div style="position:absolute;right:-20px;bottom:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,0.1)"></div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);font-weight:600;letter-spacing:2px;margin-bottom:6px">FEATURED</div>
+        <div style="font-size:1.2rem;font-weight:800;color:#fff;line-height:1.2">Build Faster<br>Ship Smarter</div>
+        <button style="margin-top:12px;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:99px;padding:6px 14px;color:#fff;font-size:0.7rem;font-weight:600;cursor:pointer">Get Started →</button>
+      </div>
+      <!-- stat tile -->
+      <div style="background:#1e1e2e;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:16px;display:flex;flex-direction:column;justify-content:space-between">
+        <div style="font-size:0.6rem;color:#888;font-weight:600;letter-spacing:1px">USERS</div>
+        <div>
+          <div style="font-size:1.8rem;font-weight:900;color:#4ade80">24k</div>
+          <div style="font-size:0.6rem;color:#4ade80">↑ 18% this month</div>
+        </div>
+      </div>
+      <!-- dark card -->
+      <div style="background:#1e1e2e;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:14px">
+        <div style="font-size:0.6rem;color:#888;font-weight:600;letter-spacing:1px;margin-bottom:8px">STACK</div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <div style="background:rgba(87,58,252,0.2);border-radius:6px;padding:5px 8px;font-size:0.65rem;color:#a78bfa;font-weight:600">React</div>
+          <div style="background:rgba(34,211,238,0.1);border-radius:6px;padding:5px 8px;font-size:0.65rem;color:#22d3ee;font-weight:600">Tailwind</div>
+          <div style="background:rgba(251,191,36,0.1);border-radius:6px;padding:5px 8px;font-size:0.65rem;color:#fbbf24;font-weight:600">Vite</div>
+        </div>
+      </div>
+      <!-- mini quote tile -->
+      <div style="background:linear-gradient(135deg,#1a1a26,#0f0f18);border:1px solid rgba(255,255,255,0.06);border-radius:18px;padding:14px">
+        <div style="font-size:1.2rem;margin-bottom:4px">⚡</div>
+        <div style="font-size:0.7rem;color:#ccc;line-height:1.5">"Great design is invisible."</div>
+        <div style="font-size:0.6rem;color:#555;margin-top:6px">— Design wisdom</div>
+      </div>
+      <!-- progress tile -->
+      <div style="grid-column:2/4;background:#1e1e2e;border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:14px">
+        <div style="font-size:0.6rem;color:#888;font-weight:600;letter-spacing:1px;margin-bottom:10px">PROGRESS</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:#aaa;margin-bottom:3px"><span>Design</span><span>90%</span></div>
+            <div style="height:4px;background:#222;border-radius:99px"><div style="width:90%;height:100%;background:linear-gradient(90deg,#573AFC,#a78bfa);border-radius:99px"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:#aaa;margin-bottom:3px"><span>Dev</span><span>65%</span></div>
+            <div style="height:4px;background:#222;border-radius:99px"><div style="width:65%;height:100%;background:linear-gradient(90deg,#22d3ee,#4ade80);border-radius:99px"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-cyan" style="font-size:0.72rem">GRID-TEMPLATE-AREAS</span>
+    <span class="card-tag tag-purple" style="font-size:0.72rem">MIXED SIZES</span>
+    <span class="card-tag tag-green" style="font-size:0.72rem">ASYMMETRIC LAYOUT</span>
+  </div>
+
+  <!-- ===== DARK MODE UI ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--accent)">6. Dark Mode UI</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Dark backgrounds (#0a0a0f to #111118), light text, neon or muted accents. Reduce eye strain, look premium. Use <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">prefers-color-scheme: dark</code> to auto-enable based on OS preference.</p>
+  <div class="demo-block" style="background:#08080f;padding:0;overflow:hidden">
+    <div class="demo-label">DARK MODE LIVE</div>
+    <!-- nav -->
+    <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#573AFC;box-shadow:0 0 8px #573AFC"></div>
+        <span style="font-size:0.8rem;font-weight:700;color:#fff">NightApp</span>
+      </div>
+      <div style="display:flex;gap:1rem">
+        <span style="font-size:0.7rem;color:#555">Docs</span>
+        <span style="font-size:0.7rem;color:#555">Blog</span>
+        <span style="font-size:0.7rem;color:#a78bfa;font-weight:600">Sign in</span>
+      </div>
+    </div>
+    <!-- hero -->
+    <div style="padding:20px 16px">
+      <div style="display:inline-block;background:rgba(87,58,252,0.15);border:1px solid rgba(87,58,252,0.3);border-radius:99px;padding:4px 14px;font-size:0.65rem;color:#a78bfa;font-weight:600;letter-spacing:1px;margin-bottom:12px">NEW — v2.0 RELEASED</div>
+      <div style="font-size:1.6rem;font-weight:800;color:#fff;line-height:1.2;margin-bottom:8px">Build in the dark.<br><span style="color:#a78bfa">Ship in the light.</span></div>
+      <p style="font-size:0.75rem;color:#666;margin-bottom:16px;max-width:280px">The developer tool built for night owls. Dark by default, fast by design.</p>
+      <div style="display:flex;gap:8px">
+        <button style="background:#573AFC;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:0.72rem;font-weight:600;cursor:pointer">Start free →</button>
+        <button style="background:transparent;color:#888;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:8px 16px;font-size:0.72rem;cursor:pointer">See docs</button>
+      </div>
+    </div>
+    <!-- stat row -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(255,255,255,0.06)">
+      <div style="padding:12px 16px;border-right:1px solid rgba(255,255,255,0.06)">
+        <div style="font-size:1.2rem;font-weight:800;color:#4ade80">99ms</div>
+        <div style="font-size:0.6rem;color:#444;margin-top:2px">Response time</div>
+      </div>
+      <div style="padding:12px 16px;border-right:1px solid rgba(255,255,255,0.06)">
+        <div style="font-size:1.2rem;font-weight:800;color:#22d3ee">50k+</div>
+        <div style="font-size:0.6rem;color:#444;margin-top:2px">Developers</div>
+      </div>
+      <div style="padding:12px 16px">
+        <div style="font-size:1.2rem;font-weight:800;color:#a78bfa">4.9★</div>
+        <div style="font-size:0.6rem;color:#444;margin-top:2px">Rating</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-purple" style="font-size:0.72rem">NEON ACCENTS</span>
+    <span class="card-tag tag-cyan" style="font-size:0.72rem">prefers-color-scheme</span>
+    <span class="card-tag tag-green" style="font-size:0.72rem">LOW CONTRAST BG</span>
+  </div>
+
+  <!-- ===== MINIMALISM ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--green)">7. Minimalism</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">White space is the design. Maximum one accent color, clean sans-serif, no decoration. Every pixel earns its place. Famous examples: Apple.com, Linear.app, Notion's landing page.</p>
+  <div class="demo-block" style="background:#fafafa;padding:0;overflow:hidden;border-color:#e5e5e5">
+    <div class="demo-label" style="background:#f0f0f0;color:#666;border-color:#ddd">MINIMALISM LIVE</div>
+    <!-- nav -->
+    <div style="padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ebebeb">
+      <span style="font-size:0.9rem;font-weight:600;color:#111;letter-spacing:-0.5px">studio°</span>
+      <div style="display:flex;gap:1.5rem">
+        <span style="font-size:0.72rem;color:#999">Work</span>
+        <span style="font-size:0.72rem;color:#999">About</span>
+        <span style="font-size:0.72rem;color:#111;font-weight:500">Contact</span>
+      </div>
+    </div>
+    <!-- hero -->
+    <div style="padding:28px 20px">
+      <p style="font-size:0.65rem;color:#999;letter-spacing:3px;font-weight:500;margin-bottom:10px">CREATIVE STUDIO</p>
+      <h2 style="font-size:1.8rem;font-weight:300;color:#111;line-height:1.3;letter-spacing:-1px;margin-bottom:16px">We design with<br><em style="font-style:italic;font-weight:400">purpose</em> and clarity.</h2>
+      <div style="width:32px;height:2px;background:#111;margin-bottom:16px"></div>
+      <p style="font-size:0.78rem;color:#888;max-width:260px;line-height:1.7;margin-bottom:20px">Removing everything that doesn't serve the work. What remains is design.</p>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:0.75rem;font-weight:500;color:#111;cursor:pointer">View projects →</span>
+      </div>
+    </div>
+    <!-- minimal grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ebebeb">
+      <div style="padding:14px 20px;border-right:1px solid #ebebeb">
+        <div style="font-size:1.4rem;font-weight:200;color:#111">08</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:2px;letter-spacing:1px">YEARS</div>
+      </div>
+      <div style="padding:14px 20px">
+        <div style="font-size:1.4rem;font-weight:200;color:#111">120+</div>
+        <div style="font-size:0.6rem;color:#aaa;margin-top:2px;letter-spacing:1px">CLIENTS</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-green" style="font-size:0.72rem">WHITE SPACE</span>
+    <span class="card-tag tag-yellow" style="font-size:0.72rem">THIN FONTS</span>
+    <span class="card-tag tag-purple" style="font-size:0.72rem">ONE ACCENT COLOR</span>
+  </div>
+
+  <!-- ===== GRADIENT UI ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--pink)">8. Gradient UI</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Vibrant gradient backgrounds, mesh gradients, aurora effects. Stripe, Linear, and Vercel use this style. Key: <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">background: linear-gradient()</code> or <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">radial-gradient()</code> with multiple overlapping layers.</p>
+  <div class="demo-block" style="padding:0;overflow:hidden;border:none">
+    <div class="demo-label" style="z-index:5">GRADIENT UI LIVE</div>
+    <!-- gradient hero -->
+    <div style="background:linear-gradient(135deg,#0f0035 0%,#1a0050 30%,#0d1b4b 60%,#001133 100%);padding:20px 20px 0;position:relative;overflow:hidden">
+      <!-- mesh orbs -->
+      <div style="position:absolute;top:-40px;left:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,0.7),transparent 70%);pointer-events:none"></div>
+      <div style="position:absolute;top:0;right:-20px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.5),transparent 70%);pointer-events:none"></div>
+      <div style="position:absolute;bottom:-20px;left:30%;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,0.4),transparent 70%);pointer-events:none"></div>
+      <div style="position:relative;z-index:2;text-align:center;padding-bottom:20px">
+        <div style="display:inline-block;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:99px;padding:5px 16px;font-size:0.65rem;color:rgba(255,255,255,0.8);font-weight:600;letter-spacing:1px;margin-bottom:14px">✦ AURORA DESIGN</div>
+        <div style="font-size:1.7rem;font-weight:800;line-height:1.1;margin-bottom:10px">
+          <span style="background:linear-gradient(135deg,#fff,#e9d5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Colors that</span><br>
+          <span style="background:linear-gradient(135deg,#c084fc,#818cf8,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">feel alive.</span>
+        </div>
+        <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);max-width:240px;margin:0 auto 16px">Gradient backgrounds that breathe and glow. Perfect for SaaS landing pages.</p>
+        <button style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:0.75rem;font-weight:600;cursor:pointer;box-shadow:0 0 30px rgba(124,58,237,0.5)">Start Building</button>
+      </div>
+      <!-- gradient cards row -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding-bottom:16px;position:relative;z-index:2">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#c084fc,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">∞</div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:3px">Gradients</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#67e8f9,#4ade80);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">◎</div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:3px">Aurora</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;text-align:center">
+          <div style="font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,#fbbf24,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">✦</div>
+          <div style="font-size:0.6rem;color:rgba(255,255,255,0.4);margin-top:3px">Mesh</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-pink" style="font-size:0.72rem">MESH GRADIENTS</span>
+    <span class="card-tag tag-purple" style="font-size:0.72rem">AURORA EFFECT</span>
+    <span class="card-tag tag-cyan" style="font-size:0.72rem">GRADIENT TEXT</span>
+    <span class="card-tag tag-orange" style="font-size:0.72rem">RADIAL ORBS</span>
+  </div>
+
+  <!-- ===== SWISS / TYPOGRAPHY ===== -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:2.5rem 0 0.75rem;color:var(--yellow)">9. Swiss / Typography UI</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Design driven entirely by typography and grid. No gradients, no illustrations — just clean type hierarchy, sharp lines, and whitespace. Inspired by the International Typographic Style from Switzerland in the 1950s.</p>
+  <div class="demo-block" style="background:#f5f0e8;padding:0;overflow:hidden;border-color:#d4c9b0">
+    <div class="demo-label" style="background:#e8e0d0;color:#555;border-color:#c4b8a0">SWISS TYPE LIVE</div>
+    <!-- masthead -->
+    <div style="padding:12px 16px;border-bottom:3px solid #1a1a1a;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <span style="font-size:0.55rem;letter-spacing:4px;color:#888;font-weight:600;display:block">INTERNATIONAL</span>
+        <span style="font-size:1.1rem;font-weight:900;color:#1a1a1a;letter-spacing:-1px;line-height:1">TYPOGRAPHICA</span>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:0.55rem;color:#888;letter-spacing:2px">ISSUE 24</div>
+        <div style="font-size:0.55rem;color:#888">WINTER 2025</div>
+      </div>
+    </div>
+    <!-- editorial grid -->
+    <div style="display:grid;grid-template-columns:2fr 1fr;border-bottom:1px solid #1a1a1a">
+      <!-- main article -->
+      <div style="padding:14px 16px;border-right:1px solid #1a1a1a">
+        <div style="font-size:0.5rem;font-weight:800;letter-spacing:4px;color:#c00;margin-bottom:6px">DESIGN THEORY</div>
+        <h2 style="font-size:1.5rem;font-weight:900;color:#1a1a1a;line-height:1.05;letter-spacing:-1px;margin-bottom:8px">The Grid<br>Is Everything.</h2>
+        <div style="width:24px;height:2px;background:#1a1a1a;margin-bottom:8px"></div>
+        <p style="font-size:0.65rem;color:#444;line-height:1.7;margin-bottom:10px">Typography is not decoration. It is communication. The Swiss masters knew that structure, hierarchy, and grid were the only tools a designer truly needed.</p>
+        <span style="font-size:0.55rem;font-weight:700;letter-spacing:2px;color:#888">BY HELMUT SCHMIDT</span>
+      </div>
+      <!-- sidebar -->
+      <div style="padding:14px 12px">
+        <div style="font-size:0.5rem;font-weight:800;letter-spacing:3px;color:#888;border-bottom:1px solid #1a1a1a;padding-bottom:6px;margin-bottom:8px">ALSO IN THIS ISSUE</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="border-left:2px solid #c00;padding-left:8px">
+            <div style="font-size:0.65rem;font-weight:700;color:#1a1a1a;line-height:1.2">Helvetica at 70</div>
+            <div style="font-size:0.55rem;color:#888;margin-top:2px">The typeface that changed everything</div>
+          </div>
+          <div style="border-left:2px solid #1a1a1a;padding-left:8px">
+            <div style="font-size:0.65rem;font-weight:700;color:#1a1a1a;line-height:1.2">White Space Rules</div>
+            <div style="font-size:0.55rem;color:#888;margin-top:2px">Less is always more</div>
+          </div>
+          <div style="border-left:2px solid #1a1a1a;padding-left:8px">
+            <div style="font-size:0.65rem;font-weight:700;color:#1a1a1a;line-height:1.2">The 8pt Grid System</div>
+            <div style="font-size:0.55rem;color:#888;margin-top:2px">Math behind great layouts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- bottom bar -->
+    <div style="padding:8px 16px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:0.55rem;color:#888;letter-spacing:2px">SUBSCRIBE FOR MORE</span>
+      <button style="background:#1a1a1a;color:#f5f0e8;border:none;padding:6px 14px;font-size:0.6rem;font-weight:700;letter-spacing:1px;cursor:pointer">→</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:0.75rem;flex-wrap:wrap">
+    <span class="card-tag tag-yellow" style="font-size:0.72rem">EDITORIAL GRID</span>
+    <span class="card-tag tag-orange" style="font-size:0.72rem">TYPE HIERARCHY</span>
+    <span class="card-tag tag-green" style="font-size:0.72rem">ZERO DECORATION</span>
+    <span class="card-tag tag-pink" style="font-size:0.72rem">HAIRLINE RULES</span>
+  </div>
+</section>
+
+<!-- ==================== UX PATTERNS ==================== -->
+<section class="section" id="ux">
+  <div class="section-header">
+    <div class="section-icon">🧠</div>
+    <div>
+      <div class="section-title">Types of UX Patterns</div>
+      <div class="section-subtitle">How users interact with and navigate your web app</div>
+    </div>
+  </div>
+
+  <!-- GALLERY UX DEMO -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.75rem;color:var(--accent)">Gallery UX — How it works</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">A gallery UX shows items in a grid. On hover: overlay with title/action. Clicking opens a lightbox or detail view. Used in photo apps, portfolios, product pages.</p>
+
+  <div class="gallery-demo" style="margin-bottom:1.5rem">
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#667eea,#764ba2)"></div>
+      <div class="gallery-overlay"><span>🌌 Space</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#f093fb,#f5576c)"></div>
+      <div class="gallery-overlay"><span>🌸 Bloom</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#4facfe,#00f2fe)"></div>
+      <div class="gallery-overlay"><span>🌊 Ocean</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#43e97b,#38f9d7)"></div>
+      <div class="gallery-overlay"><span>🌿 Forest</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#fa709a,#fee140)"></div>
+      <div class="gallery-overlay"><span>🔥 Fire</span></div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-bg" style="height:100%;background:linear-gradient(135deg,#a18cd1,#fbc2eb)"></div>
+      <div class="gallery-overlay"><span>🦄 Dream</span></div>
+    </div>
+  </div>
+
+  <!-- MASONRY -->
+  <h3 style="font-size:1.1rem;font-weight:700;margin:1.5rem 0 0.75rem;color:var(--pink)">Masonry / Pinterest UX</h3>
+  <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Items flow into columns at variable heights. Creates a natural, organic look. CSS: <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">columns: 3</code> is the simplest method.</p>
+  <div class="masonry-demo" style="margin-bottom:1.5rem">
+    <div class="masonry-item"><div style="height:90px;background:linear-gradient(135deg,#667eea,#764ba2)"></div><div class="masonry-label">Tall Card</div></div>
+    <div class="masonry-item"><div style="height:50px;background:linear-gradient(135deg,#f093fb,#f5576c)"></div><div class="masonry-label">Short</div></div>
+    <div class="masonry-item"><div style="height:120px;background:linear-gradient(135deg,#4facfe,#00f2fe)"></div><div class="masonry-label">Taller Item</div></div>
+    <div class="masonry-item"><div style="height:60px;background:linear-gradient(135deg,#43e97b,#38f9d7)"></div><div class="masonry-label">Mid Card</div></div>
+    <div class="masonry-item"><div style="height:80px;background:linear-gradient(135deg,#fa709a,#fee140)"></div><div class="masonry-label">Regular</div></div>
+    <div class="masonry-item"><div style="height:45px;background:linear-gradient(135deg,#a18cd1,#fbc2eb)"></div><div class="masonry-label">Mini</div></div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-emoji">🗂️</div>
+      <h3>Tab / Filter UX</h3>
+      <p>Category tabs or pill filters let users narrow down content. Clicking a tab shows only matching items. Used in marketplaces, dashboards, and portfolios.</p>
+      <span class="card-tag tag-cyan">FILTER PATTERN</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🔍</div>
+      <h3>Search UX</h3>
+      <p>Real-time search as you type (debouncing prevents lag). Shows suggestions in a dropdown. Filters results instantly. Keyboard navigable.</p>
+      <span class="card-tag tag-green">DISCOVERY</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📋</div>
+      <h3>Card List UX</h3>
+      <p>A list of cards with image, title, description, and CTA button. Good for blogs, products, and profiles. Can switch between list and grid view.</p>
+      <span class="card-tag tag-purple">STANDARD</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🎠</div>
+      <h3>Carousel / Slider</h3>
+      <p>Items scroll horizontally with arrows or swipe. Great for featured content, testimonials, and image galleries. Use sparingly — users often miss content.</p>
+      <span class="card-tag tag-orange">SWIPE</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🪟</div>
+      <h3>Modal / Lightbox</h3>
+      <p>A popup overlay that shows detail without leaving the page. Click outside or press ESC to close. Used for forms, image previews, confirmations.</p>
+      <span class="card-tag tag-pink">OVERLAY</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📜</div>
+      <h3>Infinite Scroll</h3>
+      <p>Load more content as the user scrolls down — no "next page" button. Used by Twitter, Instagram, TikTok. Uses <code style="font-size:0.78rem;background:var(--bg3);padding:2px 6px;border-radius:4px">IntersectionObserver</code> API.</p>
+      <span class="card-tag tag-yellow">SOCIAL UX</span>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Golden UX Rule:</strong> Users shouldn't have to think. Every click should feel obvious. Use clear labels, visual hierarchy, and consistent patterns throughout your site.
+  </div>
+</section>
+
+<!-- ==================== HTML ELEMENTS ==================== -->
+<section class="section" id="elements">
+  <div class="section-header">
+    <div class="section-icon">🧩</div>
+    <div>
+      <div class="section-title">Types of HTML Elements</div>
+      <div class="section-subtitle">The building blocks of every web page</div>
+    </div>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="card">
+      <div class="card-emoji">📝</div>
+      <h3>Text Elements</h3>
+      <p>h1–h6 for headings, p for paragraphs, span for inline text, strong/em for emphasis, blockquote for quotes.</p>
+      <div class="pill-grid"><span class="pill">h1-h6</span><span class="pill">p</span><span class="pill">span</span><span class="pill">em</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🖼️</div>
+      <h3>Media Elements</h3>
+      <p>img for images, video with controls, audio player, canvas for drawing, iframe for embedding content.</p>
+      <div class="pill-grid"><span class="pill">img</span><span class="pill">video</span><span class="pill">canvas</span><span class="pill">iframe</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📋</div>
+      <h3>Form Elements</h3>
+      <p>input (text, email, range, checkbox), textarea, select/option, button, label, form — all for user data collection.</p>
+      <div class="pill-grid"><span class="pill">input</span><span class="pill">button</span><span class="pill">select</span><span class="pill">form</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📦</div>
+      <h3>Layout Elements</h3>
+      <p>div (generic container), section, article, header, footer, nav, main, aside — semantic elements for structure.</p>
+      <div class="pill-grid"><span class="pill">div</span><span class="pill">section</span><span class="pill">main</span><span class="pill">nav</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🔗</div>
+      <h3>Link & List Elements</h3>
+      <p>a for hyperlinks, ul/ol/li for lists, dl/dt/dd for definition lists. Links are the web's core navigation system.</p>
+      <div class="pill-grid"><span class="pill">a</span><span class="pill">ul</span><span class="pill">ol</span><span class="pill">li</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📊</div>
+      <h3>Table Elements</h3>
+      <p>table, thead, tbody, tr for rows, th for headers, td for cells. Use for data only — not for layouts anymore!</p>
+      <div class="pill-grid"><span class="pill">table</span><span class="pill">tr</span><span class="pill">th</span><span class="pill">td</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🎭</div>
+      <h3>Script & Style</h3>
+      <p>script to add JavaScript, style for inline CSS, link rel="stylesheet" to load external CSS files.</p>
+      <div class="pill-grid"><span class="pill">script</span><span class="pill">style</span><span class="pill">link</span><span class="pill">meta</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">✨</div>
+      <h3>SVG Elements</h3>
+      <p>Scalable Vector Graphics — icons, illustrations, charts drawn in code. path, circle, rect, g, text, defs inside &lt;svg&gt;.</p>
+      <div class="pill-grid"><span class="pill">svg</span><span class="pill">path</span><span class="pill">circle</span><span class="pill">rect</span></div>
+    </div>
+    <div class="card">
+      <div class="card-emoji">💬</div>
+      <h3>Dialog & Details</h3>
+      <p>dialog for native popups (no JS needed for basic use), details/summary for accordion dropdowns — zero CSS required.</p>
+      <div class="pill-grid"><span class="pill">dialog</span><span class="pill">details</span><span class="pill">summary</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CODING LANGUAGES ==================== -->
+<section class="section" id="languages">
+  <div class="section-header">
+    <div class="section-icon">💻</div>
+    <div>
+      <div class="section-title">Types of Coding Languages</div>
+      <div class="section-subtitle">The web's tech stack from beginner to advanced</div>
+    </div>
+  </div>
+
+  <table class="compare-table" style="border:1px solid var(--border);border-radius:14px;overflow:hidden;width:100%">
+    <thead>
+      <tr>
+        <th>Language / Tech</th>
+        <th>What it Does</th>
+        <th>Where Used</th>
+        <th>Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>HTML</strong></td><td>Structure of the page — headings, buttons, forms</td><td>Every website</td><td><span class="card-tag tag-green" style="font-size:0.7rem">Beginner</span></td></tr>
+      <tr><td><strong>CSS</strong></td><td>Styling — colors, fonts, layout, animations</td><td>Every website</td><td><span class="card-tag tag-green" style="font-size:0.7rem">Beginner</span></td></tr>
+      <tr><td><strong>JavaScript</strong></td><td>Interactivity — clicks, fetch APIs, DOM manipulation</td><td>Every website</td><td><span class="card-tag tag-yellow" style="font-size:0.7rem">Intermediate</span></td></tr>
+      <tr><td><strong>TypeScript</strong></td><td>JavaScript with types — catches bugs before runtime</td><td>Large apps</td><td><span class="card-tag tag-yellow" style="font-size:0.7rem">Intermediate</span></td></tr>
+      <tr><td><strong>JSON</strong></td><td>Data format — APIs return JSON, config files use it</td><td>APIs, configs</td><td><span class="card-tag tag-green" style="font-size:0.7rem">Beginner</span></td></tr>
+      <tr><td><strong>Python</strong></td><td>Backend logic, AI/ML scripts, automation</td><td>Servers, AI</td><td><span class="card-tag tag-yellow" style="font-size:0.7rem">Intermediate</span></td></tr>
+      <tr><td><strong>SQL</strong></td><td>Query databases — SELECT, INSERT, UPDATE data</td><td>Databases</td><td><span class="card-tag tag-yellow" style="font-size:0.7rem">Intermediate</span></td></tr>
+      <tr><td><strong>Markdown</strong></td><td>Simple text formatting for READMEs and docs</td><td>GitHub, blogs</td><td><span class="card-tag tag-green" style="font-size:0.7rem">Beginner</span></td></tr>
+      <tr><td><strong>Bash / Shell</strong></td><td>Terminal commands — run files, install packages</td><td>Terminal</td><td><span class="card-tag tag-orange" style="font-size:0.7rem">Advanced</span></td></tr>
+      <tr><td><strong>React JSX</strong></td><td>JavaScript that renders HTML-like components</td><td>Modern apps</td><td><span class="card-tag tag-yellow" style="font-size:0.7rem">Intermediate</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="tip" style="margin-top:1.5rem">
+    <strong>Learning Path:</strong> HTML → CSS → JavaScript (vanilla) → GitHub → then pick a framework (React / Vue / Svelte). Don't skip the basics!
+  </div>
+</section>
+
+<!-- ==================== ANIMATIONS ==================== -->
+<section class="section" id="animations">
+  <div class="section-header">
+    <div class="section-icon">✨</div>
+    <div>
+      <div class="section-title">Types of Animations</div>
+      <div class="section-subtitle">Hover over each card to see the animation in action</div>
+    </div>
+  </div>
+
+  <div class="anim-grid">
+    <div class="anim-box anim-fade">
+      <div class="anim-icon">👻</div>
+      <h4>Fade In/Out</h4>
+      <p>opacity 0 → 1</p>
+    </div>
+    <div class="anim-box anim-slide">
+      <div class="anim-icon">➡️</div>
+      <h4>Slide</h4>
+      <p>translateX / Y</p>
+    </div>
+    <div class="anim-box anim-bounce2">
+      <div class="anim-icon">⚽</div>
+      <h4>Bounce</h4>
+      <p>translateY loop</p>
+    </div>
+    <div class="anim-box anim-spin">
+      <div class="anim-icon">⚙️</div>
+      <h4>Spin</h4>
+      <p>rotate 360deg</p>
+    </div>
+    <div class="anim-box anim-pulse">
+      <div class="anim-icon">💓</div>
+      <h4>Pulse</h4>
+      <p>scale 1 → 1.2</p>
+    </div>
+    <div class="anim-box anim-shake">
+      <div class="anim-icon">🔔</div>
+      <h4>Shake</h4>
+      <p>rotate ±8deg</p>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem">
+    <h3 style="font-size:1rem;font-weight:600;margin-bottom:1rem">More animation types:</h3>
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-emoji">🎬</div>
+        <h3>Scroll Animations</h3>
+        <p>Elements animate as you scroll. Use IntersectionObserver API + CSS class toggle. Libraries: AOS, GSAP ScrollTrigger, Animate On Scroll.</p>
+        <span class="card-tag tag-purple">ON SCROLL</span>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🌊</div>
+        <h3>CSS Keyframes</h3>
+        <p>Define animation steps with @keyframes. Control timing with animation-duration, animation-timing-function (ease, linear, cubic-bezier).</p>
+        <span class="card-tag tag-cyan">CSS NATIVE</span>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🎯</div>
+        <h3>Hover Micro-interactions</h3>
+        <p>Small animations on hover: button scale, icon rotate, underline grow, color shift. Adds polish and responsiveness to user actions.</p>
+        <span class="card-tag tag-green">UX POLISH</span>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🔄</div>
+        <h3>Loading Animations</h3>
+        <p>Spinner, skeleton screens, progress bar. Shown while data loads. Prevents users from thinking the site is broken. Use CSS or Lottie.</p>
+        <span class="card-tag tag-yellow">FEEDBACK</span>
+      </div>
+      <div class="card">
+        <div class="card-emoji">🖱️</div>
+        <h3>Page Transitions</h3>
+        <p>Fade or slide between pages. CSS View Transitions API (new!) makes this easy. GSAP or Barba.js for more control.</p>
+        <span class="card-tag tag-orange">NAVIGATION</span>
+      </div>
+      <div class="card">
+        <div class="card-emoji">✏️</div>
+        <h3>Text Animation</h3>
+        <p>Typewriter effect, text reveal, letter-by-letter stagger, gradient shift on text. Typed.js or pure CSS for basic effects.</p>
+        <span class="card-tag tag-pink">TYPOGRAPHY</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="code-block" style="margin-top:1.5rem">
+<span class="cm">/* CSS Keyframe example — Fade In Up */</span>
+<span class="kw">@keyframes</span> <span class="fn">fadeInUp</span> {
+  <span class="kw">from</span> { <span class="attr">opacity</span>: <span class="val">0</span>; <span class="attr">transform</span>: <span class="fn">translateY</span>(<span class="val">20px</span>); }
+  <span class="kw">to</span>   { <span class="attr">opacity</span>: <span class="val">1</span>; <span class="attr">transform</span>: <span class="fn">translateY</span>(<span class="val">0</span>); }
+}
+
+<span class="kw">.card</span> {
+  <span class="attr">animation</span>: <span class="val">fadeInUp 0.6s ease forwards</span>;
+}
+  </div>
+</section>
+
+<!-- ==================== SEO / AEO / GEO ==================== -->
+<section class="section" id="seo">
+  <div class="section-header">
+    <div class="section-icon">🔍</div>
+    <div>
+      <div class="section-title">SEO, AEO & GEO</div>
+      <div class="section-subtitle">Getting found on Google, AI answers, and maps</div>
+    </div>
+  </div>
+
+  <div class="seo-box">
+    <h4>🔍 SEO — Search Engine Optimization <span class="seo-badge tag-green">FOR GOOGLE</span></h4>
+    <p>SEO makes your page show up in Google search results. You optimize for: meta title, meta description, heading structure (h1→h2→h3), page speed, mobile-friendliness, and backlinks. Use JSON-LD structured data to give Google extra context about your content.</p>
+  </div>
+
+  <div class="seo-box">
+    <h4>🤖 AEO — Answer Engine Optimization <span class="seo-badge tag-purple">FOR AI</span></h4>
+    <p>AEO makes your content appear in AI answers — like Google's Featured Snippets, ChatGPT Browse, and Perplexity. Key: write clear Q&amp;A style content, use FAQ schema (JSON-LD FAQPage), structure answers in 40–50 word paragraphs, use clean semantic HTML. AI models prefer precise, factual, well-structured pages.</p>
+  </div>
+
+  <div class="seo-box">
+    <h4>🗺️ GEO — Generative Engine Optimization <span class="seo-badge tag-cyan">FOR LLMs</span></h4>
+    <p>GEO is newer — optimizing for Large Language Models like Gemini and GPT-4. LLMs prefer content with: authoritative citations, clear entity mentions (names, locations, brands), structured data (Person/Organization schema), and factual accuracy. Your content becomes an LLM's "source of truth."</p>
+  </div>
+
+  <h3 style="font-size:1rem;font-weight:600;margin:1.5rem 0 1rem">Essential JSON-LD Schemas</h3>
+  <div class="code-block">
+<span class="cm">/* Add this inside &lt;head&gt; for FAQPage AEO */</span>
+<span class="tag">&lt;script</span> <span class="attr">type</span>=<span class="str">"application/ld+json"</span><span class="tag">&gt;</span>
+{
+  <span class="attr">"@context"</span>: <span class="str">"https://schema.org"</span>,
+  <span class="attr">"@type"</span>: <span class="str">"FAQPage"</span>,
+  <span class="attr">"mainEntity"</span>: [{
+    <span class="attr">"@type"</span>: <span class="str">"Question"</span>,
+    <span class="attr">"name"</span>: <span class="str">"What is Glass UI?"</span>,
+    <span class="attr">"acceptedAnswer"</span>: {
+      <span class="attr">"@type"</span>: <span class="str">"Answer"</span>,
+      <span class="attr">"text"</span>: <span class="str">"Glass UI uses frosted glass effects with backdrop-filter blur."</span>
+    }
+  }]
+}
+<span class="tag">&lt;/script&gt;</span>
+  </div>
+
+  <div class="grid grid-3" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="card-emoji">⚡</div>
+      <h3>Core Web Vitals</h3>
+      <p>Google scores your page on LCP (load speed), FID (interactivity), and CLS (layout stability). Test with Google Lighthouse.</p>
+      <span class="card-tag tag-green">PERFORMANCE</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📱</div>
+      <h3>Mobile-First</h3>
+      <p>Google ranks mobile versions first. Use responsive CSS (flexbox, grid, media queries). Test with Chrome DevTools device mode.</p>
+      <span class="card-tag tag-cyan">RESPONSIVE</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🏷️</div>
+      <h3>Meta Tags</h3>
+      <p>title tag (60 chars), meta description (160 chars), canonical URL, robots meta, hreflang for multiple languages.</p>
+      <span class="card-tag tag-purple">HEAD TAGS</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== FAVICON & OG IMAGE ==================== -->
+<section class="section" id="meta">
+  <div class="section-header">
+    <div class="section-icon">🖼️</div>
+    <div>
+      <div class="section-title">Favicon & OG Image</div>
+      <div class="section-subtitle">How your site looks in browser tabs and on social media</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-emoji">⭐</div>
+      <h3>Favicon</h3>
+      <p>The tiny icon in the browser tab (and bookmarks). A 32×32px or 16×16px .ico / .png file — or use an SVG favicon for perfect clarity at any size. Place as <code style="font-size:0.75rem;background:var(--bg3);padding:2px 6px;border-radius:4px">favicon.ico</code> in your root folder, or link it in &lt;head&gt;.</p>
+      <span class="card-tag tag-yellow">BROWSER TAB ICON</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📸</div>
+      <h3>OG Image (Open Graph)</h3>
+      <p>When you share a link on Twitter, Discord, WhatsApp — the big preview image that appears. Must be 1200×630px. Set via <code style="font-size:0.75rem;background:var(--bg3);padding:2px 6px;border-radius:4px">&lt;meta property="og:image"&gt;</code> in &lt;head&gt;. Make it eye-catching with your logo and title.</p>
+      <span class="card-tag tag-pink">SOCIAL PREVIEW</span>
+    </div>
+  </div>
+
+  <div class="code-block" style="margin-top:1.5rem">
+<span class="cm">&lt;!-- Favicon (in &lt;head&gt;) --&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"icon"</span> <span class="attr">href</span>=<span class="str">"/favicon.ico"</span> <span class="attr">sizes</span>=<span class="str">"32x32"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"icon"</span> <span class="attr">href</span>=<span class="str">"/icon.svg"</span> <span class="attr">type</span>=<span class="str">"image/svg+xml"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;link</span> <span class="attr">rel</span>=<span class="str">"apple-touch-icon"</span> <span class="attr">href</span>=<span class="str">"/apple-touch-icon.png"</span><span class="tag">&gt;</span>
+
+<span class="cm">&lt;!-- OG / Social Preview Tags --&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="str">"og:title"</span>       <span class="attr">content</span>=<span class="str">"My Awesome Tool"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="str">"og:description"</span>  <span class="attr">content</span>=<span class="str">"A one-line description."</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="str">"og:image"</span>       <span class="attr">content</span>=<span class="str">"https://yoursite.com/og.png"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">property</span>=<span class="str">"og:url"</span>         <span class="attr">content</span>=<span class="str">"https://yoursite.com"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="str">"twitter:card"</span>       <span class="attr">content</span>=<span class="str">"summary_large_image"</span><span class="tag">&gt;</span>
+  </div>
+
+  <div class="tip">
+    <strong>Quick SVG Favicon trick:</strong> Use an emoji as your favicon with zero files — <code style="background:var(--bg3);padding:2px 6px;border-radius:4px;font-size:0.78rem;color:var(--cyan)">&lt;link rel="icon" href="data:image/svg+xml,&lt;svg...&gt;&lt;text y='26'&gt;⚡&lt;/text&gt;&lt;/svg&gt;"&gt;</code>
+  </div>
+</section>
+
+<!-- ==================== HOSTING ==================== -->
+<section class="section" id="hosting">
+  <div class="section-header">
+    <div class="section-icon">🚀</div>
+    <div>
+      <div class="section-title">How to Host Your Website</div>
+      <div class="section-subtitle">Free and paid options for getting your site live</div>
+    </div>
+  </div>
+
+  <div class="grid grid-3">
+    <div class="host-card">
+      <div class="host-logo">🐙</div>
+      <div class="host-name">GitHub Pages</div>
+      <div class="host-free">FREE FOREVER</div>
+      <div class="host-desc">Push your HTML/CSS/JS to a repo. Enable Pages in Settings. URL: username.github.io/repo. Best for static sites.</div>
+    </div>
+    <div class="host-card">
+      <div class="host-logo">▲</div>
+      <div class="host-name">Vercel</div>
+      <div class="host-free">FREE TIER</div>
+      <div class="host-desc">Drag & drop deploy, or connect GitHub repo. Auto-deploys on every push. Supports serverless functions. Best for Next.js.</div>
+    </div>
+    <div class="host-card">
+      <div class="host-logo">🟢</div>
+      <div class="host-name">Netlify</div>
+      <div class="host-free">FREE TIER</div>
+      <div class="host-desc">Like Vercel. Great for static sites + forms. Deploy by drag & drop or git. Custom domain support included.</div>
+    </div>
+    <div class="host-card">
+      <div class="host-logo">🔥</div>
+      <div class="host-name">Firebase Hosting</div>
+      <div class="host-free">FREE TIER</div>
+      <div class="host-desc">Google's hosting. Fast CDN, SSL auto. Great if you also use Firestore/Auth. Deploy with firebase-tools CLI.</div>
+    </div>
+    <div class="host-card">
+      <div class="host-logo">🌊</div>
+      <div class="host-name">Cloudflare Pages</div>
+      <div class="host-free">FREE FOREVER</div>
+      <div class="host-desc">Unlimited bandwidth, global CDN, instant cache purge. Connect GitHub and it auto-deploys. Very fast.</div>
+    </div>
+    <div class="host-card">
+      <div class="host-logo">🟣</div>
+      <div class="host-name">Render</div>
+      <div class="host-free">FREE TIER</div>
+      <div class="host-desc">Hosts static sites AND Node.js/Python backends. Great when your project needs a real server (not just static files).</div>
+    </div>
+  </div>
+
+  <div class="tip" style="margin-top:1.5rem">
+    <strong>For beginners:</strong> Start with GitHub Pages. It's free, fast to set up, and your URL becomes part of your portfolio (username.github.io/projectname).
+  </div>
+</section>
+
+<!-- ==================== GITHUB ==================== -->
+<section class="section" id="github">
+  <div class="section-header">
+    <div class="section-icon">🐙</div>
+    <div>
+      <div class="section-title">How to Add Your Project to GitHub</div>
+      <div class="section-subtitle">Step by step — from zero to live website</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Create a GitHub account</h4>
+        <p>Go to github.com, sign up free. Your username becomes part of your site URL — choose wisely!</p>
+        <code>github.com/signup</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Create a new repository</h4>
+        <p>Click the + button → New Repository. Give it a name (no spaces), set Public, and optionally add a README. Click "Create repository".</p>
+        <code>github.com/new</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Install Git on your computer</h4>
+        <p>Download git-scm.com. Run the installer. Verify in terminal: git --version should return a version number.</p>
+        <code>git --version</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Initialize and connect your project</h4>
+        <p>Open terminal in your project folder. Run these 3 commands to initialize git, stage all files, and make your first commit.</p>
+        <code>git init &amp;&amp; git add . &amp;&amp; git commit -m "first commit"</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-content">
+        <h4>Push to GitHub</h4>
+        <p>Connect your local repo to the remote GitHub repo and push your code. Replace YOUR-USERNAME and REPO-NAME with your actual values.</p>
+        <code>git remote add origin https://github.com/USER/REPO.git &amp;&amp; git push -u origin main</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-content">
+        <h4>Enable GitHub Pages</h4>
+        <p>Go to your repo → Settings → Pages → Source: Deploy from branch → Branch: main → /root → Save. Your site goes live at username.github.io/repo-name in ~60 seconds.</p>
+        <code>Settings → Pages → Enable</code>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-content">
+        <h4>Update your site</h4>
+        <p>Made changes? Run these 3 commands again to push updates. GitHub Pages auto-rebuilds in seconds.</p>
+        <code>git add . &amp;&amp; git commit -m "update" &amp;&amp; git push</code>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MORE TIPS ==================== -->
+<section class="section" id="more">
+  <div class="section-header">
+    <div class="section-icon">⚡</div>
+    <div>
+      <div class="section-title">50+ More Concepts</div>
+      <div class="section-subtitle">Essential terms every web developer should know</div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-emoji">📐</div>
+      <h3>CSS Flexbox</h3>
+      <p>1D layout system. Arranges items in a row or column. display:flex on parent. Children align with justify-content, align-items. The most-used CSS layout tool.</p>
+      <span class="card-tag tag-cyan">LAYOUT</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🔲</div>
+      <h3>CSS Grid</h3>
+      <p>2D layout system. Creates rows AND columns simultaneously. grid-template-columns with repeat() and minmax() for responsive grids without media queries.</p>
+      <span class="card-tag tag-cyan">LAYOUT</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📱</div>
+      <h3>Media Queries</h3>
+      <p>CSS that applies only at certain screen sizes. @media (max-width: 768px) { ... } makes your site adapt for phones, tablets, and desktops.</p>
+      <span class="card-tag tag-green">RESPONSIVE</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🌐</div>
+      <h3>API Fetch</h3>
+      <p>Load data from external services (weather, jokes, anime, etc). fetch('https://api.example.com/data').then(r => r.json()).then(data => console.log(data))</p>
+      <span class="card-tag tag-purple">JAVASCRIPT</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">💾</div>
+      <h3>localStorage</h3>
+      <p>Store data in the browser permanently. No server needed. localStorage.setItem('key', value) / getItem('key'). Great for settings, saved state, dark mode pref.</p>
+      <span class="card-tag tag-yellow">STORAGE</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🧮</div>
+      <h3>CSS Variables</h3>
+      <p>Define reusable values. --primary-color: #573AFC; on :root. Use anywhere with var(--primary-color). Change theme in one place, updates everywhere.</p>
+      <span class="card-tag tag-orange">CSS</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🔢</div>
+      <h3>DOM Manipulation</h3>
+      <p>JavaScript controls the page. document.getElementById(), querySelector(), addEventListener(), innerHTML, classList.add/remove. This is how all interactivity works.</p>
+      <span class="card-tag tag-purple">JS</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🎁</div>
+      <h3>CDN Libraries</h3>
+      <p>Load libraries instantly without installing: &lt;script src="https://cdnjs.cloudflare.com/..."&gt;. Common: Three.js, GSAP, Chart.js, Alpine.js, Tailwind.</p>
+      <span class="card-tag tag-cyan">LIBRARIES</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">♿</div>
+      <h3>Accessibility (a11y)</h3>
+      <p>Make sites usable for everyone. Use alt="" on images, aria-label on buttons, semantic HTML (button not div), sufficient color contrast, keyboard navigation.</p>
+      <span class="card-tag tag-green">IMPORTANT</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🎨</div>
+      <h3>Color Theory</h3>
+      <p>60-30-10 rule: 60% neutral (bg), 30% secondary, 10% accent. Use HSL for easy tweaking. Tools: coolors.co, paletton.com, Adobe Color.</p>
+      <span class="card-tag tag-pink">DESIGN</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🅰️</div>
+      <h3>Typography Scale</h3>
+      <p>Use a type scale: 12px / 14px / 16px (base) / 20px / 24px / 32px / 48px / 64px. Font pairings: Inter + Fira Code, Poppins + Lato, Playfair + Source Sans.</p>
+      <span class="card-tag tag-yellow">TYPOGRAPHY</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🔒</div>
+      <h3>HTTPS & SSL</h3>
+      <p>Secure your site with HTTPS. GitHub Pages, Vercel, and Netlify give you free SSL automatically. Google ranks HTTPS sites higher than HTTP.</p>
+      <span class="card-tag tag-green">SECURITY</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🗄️</div>
+      <h3>Custom Domain</h3>
+      <p>Buy a domain (Namecheap, Porkbun, Google Domains). Point CNAME to your hosting provider. yourname.com looks more professional than github.io/yourname.</p>
+      <span class="card-tag tag-orange">DOMAIN</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">📦</div>
+      <h3>npm / Package Manager</h3>
+      <p>npm install [package] adds tools/libraries to your project. node_modules folder contains them. package.json tracks what you've installed. Don't commit node_modules!</p>
+      <span class="card-tag tag-cyan">TOOLING</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">⚡</div>
+      <h3>Vite / Build Tools</h3>
+      <p>Vite bundles your code, handles imports, hot reloads in dev. npm create vite@latest. Essential for React/Vue projects. Way faster than webpack.</p>
+      <span class="card-tag tag-yellow">BUILD</span>
+    </div>
+    <div class="card">
+      <div class="card-emoji">🌿</div>
+      <h3>Git Branching</h3>
+      <p>Create branches for features: git checkout -b feature-name. Work safely without breaking main. Merge with git merge or GitHub Pull Request.</p>
+      <span class="card-tag tag-green">GIT</span>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem">
+    <h3 style="font-size:1rem;font-weight:600;margin-bottom:1rem;color:var(--muted)">Quick Reference Pill Grid</h3>
+    <div class="pill-grid">
+      <span class="pill">z-index</span>
+      <span class="pill">position: absolute</span>
+      <span class="pill">overflow: hidden</span>
+      <span class="pill">border-radius</span>
+      <span class="pill">transition</span>
+      <span class="pill">cursor: pointer</span>
+      <span class="pill">IntersectionObserver</span>
+      <span class="pill">debounce</span>
+      <span class="pill">async/await</span>
+      <span class="pill">Promise</span>
+      <span class="pill">JSON.stringify</span>
+      <span class="pill">JSON.parse</span>
+      <span class="pill">Array.map()</span>
+      <span class="pill">Array.filter()</span>
+      <span class="pill">template literals</span>
+      <span class="pill">arrow functions</span>
+      <span class="pill">destructuring</span>
+      <span class="pill">spread operator</span>
+      <span class="pill">optional chaining</span>
+      <span class="pill">nullish coalescing</span>
+      <span class="pill">event.preventDefault</span>
+      <span class="pill">setTimeout</span>
+      <span class="pill">setInterval</span>
+      <span class="pill">CSS clamp()</span>
+      <span class="pill">CSS calc()</span>
+      <span class="pill">CSS min/max</span>
+      <span class="pill">will-change</span>
+      <span class="pill">transform: translate3d</span>
+      <span class="pill">object-fit: cover</span>
+      <span class="pill">aspect-ratio</span>
+      <span class="pill">gap</span>
+      <span class="pill">place-items</span>
+      <span class="pill">white-space: nowrap</span>
+      <span class="pill">text-overflow: ellipsis</span>
+      <span class="pill">pointer-events: none</span>
+      <span class="pill">user-select: none</span>
+      <span class="pill">-webkit-tap-highlight</span>
+      <span class="pill">prefers-color-scheme</span>
+      <span class="pill">prefers-reduced-motion</span>
+      <span class="pill">view-transition-name</span>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <p>Made with ⚡ by <a href="https://wondermayank.github.io">@wondermayank</a> · Vibe Coding Guide 2025</p>
+  <p style="margin-top:6px;font-size:0.75rem">Share this with every new developer you know 🚀</p>
+</footer>
+
+<script>
+  window.addEventListener('load', function() {
+    setTimeout(function() {
+      document.getElementById('loader').classList.add('hide');
+    }, 2000);
+  });
+</script>
+</body>
+</html>
