@@ -1,56 +1,178 @@
+<div align="center">
 
-Vibe Coding Guide & Toolkit ⚡
+# ⚡ Website Maker — Vibe Coding Guide & Toolkit
 
-A comprehensive, beginner-friendly vibe coding guide and frontend toolkit designed to help you learn web development like a pro and ship websites instantly.
-Live Demo: make.wondermayank.in
-Deployment Mirror: website-maker-pied.vercel.app
+**Learn web development, pick free tools, and ship a professional website — for ₹0.**
 
-🚀 Key Features
+[![Live Site](https://img.shields.io/badge/Live-make.wondermayank.in-573AFC?style=for-the-badge)](https://make.wondermayank.in)
+[![Mirror](https://img.shields.io/badge/Mirror-Vercel-000000?style=for-the-badge&logo=vercel)](https://website-maker-pied.vercel.app)
+![Stars](https://img.shields.io/github/stars/wondermayank/website_maker?style=for-the-badge)
+![License](https://img.shields.io/badge/Free-to%20use-22c55e?style=for-the-badge)
 
-• 50+ Web Development Concepts: Everything from fundamental layout structures to advanced optimization protocols.
-• 9 Interactive UI Styles: Ready-to-copy design code recipes including Glassmorphism, Claymorphism, Neumorphism, Bento Grid, and Brutalism.
-• 12 Micro-interaction Animations: Pure CSS and native JavaScript animation techniques (Fades, Slides, Bounces, and Keyframes).
-• Comprehensive UX Patterns: Structural roadmaps for modern applications including Masonry grids, Carousel layouts, and Infinite Scroll integrations.
-• Modern Discovery Blueprint: Actionable guidelines for Search Engine Optimization (SEO), Answer Engine Optimization (AEO), and Generative Engine Optimization (GEO).
+[🌐 Live Site](https://make.wondermayank.in) · [🐛 Report Issue](https://github.com/wondermayank/website_maker/issues) · [⭐ Star this repo](https://github.com/wondermayank/website_maker)
 
-📦 What's Inside?
+</div>
 
+---
 
-🎨 Visual & Layout UI Recipes
+## 📖 About
 
-• Glassmorphism: Frosted panel properties using background transparencies mixed with backdrop-filter: blur().
-• Claymorphism: Puffy, volumetric 3D components leveraging multi-layered interior and exterior box shadows.
-• Neumorphism: Extruded soft-user interface elements utilizing matching background shadows for simulated depth.
-• Brutalism: High-contrast, unpolished raw grid structures with thick borders and asymmetric typography.
-• Bento Grid: Asymmetric structural block configurations utilizing native CSS grid-template-areas.
+**Website Maker** is a beginner-friendly **vibe coding guide**. It explains *what everything is called*, *which type to use*, and *where to get it free* — so you can build with AI tools, deploy, and look professional from day one.
 
-⚡ Technical Roadmaps
+It covers:
 
-• Language Overview: Fast tracking breakdown covering HTML, CSS, JavaScript, TypeScript, JSON, and Markdown.
-• Core Elements & Architecture: Semantic tags, native dialog controls, vector SVGs, and responsive media handling wrappers.
-• Production Hosting Strategies: Setup guides for GitHub Pages, Cloudflare Pages, Vercel, Netlify, and Render.
+- 🧠 Vibe coding basics, prompts, and AI "skills"
+- 📚 A glossary — **what is called what** in web development
+- 🎨 UI style recipes (copy-paste CSS)
+- 🔌 Free public APIs
+- 🌍 Free subdomains
+- 🚀 Free hosting platforms
+- 🤖 Telegram bot guide
+- 🔍 SEO, AEO and GEO checklist
 
-🤖 Telegram Bot Integration & Guide
+---
 
-Easily connect your web applications to automation channels by creating an active chatbot infrastructure.
+## ✨ Features
 
-1. Registering via BotFather
+| Feature | Details |
+|---|---|
+| **50+ concepts** | From layout basics to optimisation |
+| **9 UI styles** | Glassmorphism, Claymorphism, Neumorphism, Bento Grid, Brutalism and more |
+| **12 micro-animations** | Pure CSS and vanilla JS (fade, slide, bounce, keyframes) |
+| **UX patterns** | Masonry grid, carousel, infinite scroll |
+| **Discovery blueprint** | SEO, AEO and GEO guidelines |
+| **Free stack map** | APIs, subdomains, hosting — all in one place |
+| **Telegram bot guide** | BotFather setup + working code |
 
-1. Open your Telegram client and search for the official account @BotFather.
-2. Initialize the chat interface and execute the /newbot prompt command.
-3. Assign a public display name and a unique username ending with the text bot.
-4. Securely copy the generated HTTP API access token payload string.
+---
 
-2. Forwarding Payloads via Fetch API
+## 🧭 What Is Called What (Quick Glossary)
 
-Integrate the snippet below into your index.html structure to route client updates right to your active chat thread:
-javascript
+| Term | Meaning |
+|---|---|
+| **Frontend** | What the visitor sees and clicks (HTML, CSS, JS) |
+| **Backend** | Server-side logic and database work |
+| **API** | A URL that sends or receives data |
+| **Endpoint** | One specific API URL (e.g. `/users`) |
+| **Domain** | Your site's name, e.g. `example.com` |
+| **Subdomain** | A prefix on a domain, e.g. `make.wondermayank.in` |
+| **Hosting** | The computer that serves your files to the world |
+| **CDN** | Servers worldwide that deliver your files faster |
+| **SSL / HTTPS** | The padlock — encrypted, trusted connection |
+| **DNS** | The "phonebook" that points a domain to your host |
+| **Repository (repo)** | A project folder tracked by Git |
+| **Deploy** | Publishing your site live |
+| **Token / API key** | A secret password for a service — never make it public |
+| **Webhook** | A URL that a service calls when something happens |
+| **Prompt** | The instruction you give an AI |
+| **Skill** | A reusable instruction file that teaches an AI a workflow or style |
+| **SEO / AEO / GEO** | Optimising for search engines / answer engines / generative AI |
+
+---
+
+## 🧩 File & Language Types
+
+| Type | Used for |
+|---|---|
+| `HTML` | Page structure |
+| `CSS` | Styling and layout |
+| `JavaScript` | Interactivity |
+| `TypeScript` | JavaScript with types (safer for big projects) |
+| `JSON` | Data format used by APIs and configs |
+| `Markdown (.md)` | Readable docs (like this file) |
+| `SVG` | Sharp scalable icons and logos |
+| `WebP / AVIF` | Small, fast images |
+| `WOFF2` | Web font files |
+
+---
+
+## 🎨 UI Style Recipes
+
+- **Glassmorphism** — frosted panels using transparency + `backdrop-filter: blur()`
+- **Claymorphism** — puffy 3D shapes with layered inner and outer shadows
+- **Neumorphism** — soft extruded elements using matching background shadows
+- **Brutalism** — raw grids, thick borders, bold asymmetric type
+- **Bento Grid** — asymmetric blocks with CSS `grid-template-areas`
+
+---
+
+## 🔌 Free APIs
+
+| API | Use | URL |
+|---|---|---|
+| JSONPlaceholder | Fake posts, users, todos | https://jsonplaceholder.typicode.com |
+| Random User | Fake profile cards | https://randomuser.me |
+| ipapi | Visitor country / timezone from IP | https://ipapi.co |
+| Cat Facts | Simple text responses | https://catfact.ninja |
+
+> 💡 Free tiers have rate limits. Check each provider's terms before using them in production.
+
+---
+
+## 🌍 Free Subdomains
+
+| Provider | Example | Notes |
+|---|---|---|
+| GitHub Pages | `username.github.io` | Static sites |
+| Cloudflare Pages | `project.pages.dev` | Fast global CDN |
+| Vercel | `project.vercel.app` | Great for frameworks |
+| Netlify | `project.netlify.app` | Forms, functions |
+| Render | `project.onrender.com` | Static + backend |
+| Cloudflare Workers | `name.workers.dev` | Serverless / bots |
+| is-a.dev | `you.is-a.dev` | Free for developers (PR-based) |
+| js.org | `project.js.org` | For JavaScript projects |
+
+> ⚠️ Availability and rules change. Always confirm on the provider's own site.
+
+---
+
+## 🚀 Free Hosting — Which One?
+
+| Platform | Best for | Backend support |
+|---|---|---|
+| **GitHub Pages** | Portfolios, docs, guides | ❌ Static only |
+| **Cloudflare Pages** | Fast static / JAMstack sites | ✅ via Workers |
+| **Vercel** | React / Next.js apps | ✅ Serverless |
+| **Netlify** | Static sites + forms | ✅ Functions |
+| **Render** | Full apps, APIs, bots | ✅ Yes |
+
+### Deploy in 4 steps
+
+1. Push your code to a GitHub repo
+2. Connect the repo to Cloudflare Pages / Vercel / Netlify
+3. Add your custom domain or subdomain
+4. Wait for HTTPS to activate — you're live ✅
+
+---
+
+## 🤖 Telegram Bot Guide
+
+### 1. Create the bot
+
+1. Open Telegram and search for **[@BotFather](https://t.me/BotFather)**
+2. Send `/newbot`
+3. Choose a display name and a unique username ending in `bot`
+4. Copy the **API token** BotFather gives you
+
+### 2. Get your Chat ID
+
+Send any message to your bot, then open this in a browser (replace the token):
+
+```
+https://api.telegram.org/botYOUR_TOKEN/getUpdates
+```
+
+Find `"chat":{"id": ...}` in the response.
+
+### 3. Send a message from JavaScript
+
+```javascript
 const BOT_TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN';
 const CHAT_ID = 'YOUR_CHAT_ID';
 
 async function sendVibeNotification(messageText) {
-  const endpoint = `https://telegram.org{BOT_TOKEN}/sendMessage`;
-  
+  const endpoint = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
   try {
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -61,45 +183,83 @@ async function sendVibeNotification(messageText) {
         parse_mode: 'Markdown'
       })
     });
-    
-    if (response.ok) {
-      console.log('Payload delivered successfully!');
-    }
+
+    if (response.ok) console.log('Delivered!');
   } catch (error) {
-    console.error('Error forwarding payload to Telegram endpoint:', error);
+    console.error('Telegram error:', error);
   }
 }
-Use code with caution.
+```
 
-🛠️ Free Global APIs & Essential Resources
+### 🔐 Security warning
 
-Inject these public APIs and digital assets directly into your application frontend workspace:
+Anyone can read a token placed in frontend JavaScript. For real projects:
 
-🌐 Free Public Development APIs
+- Keep the token in a **Cloudflare Worker / Vercel function** as an environment variable
+- Call your own endpoint from the website
+- If a token leaks, revoke it with `/revoke` in BotFather
 
-• Mock Data Generator: https://typicode.com (Simulate posts, users, comments, and tasks)
-• Random User Profiles: https://randomuser.me (Generate structured visitor card layout schemas)
-• Geographic Data Engine: https://ipapi.co (Locate visitor timezones and regions via IP)
-• Public Fact Feeds: https://catfact.ninja (Quick string responses for populating text areas)
+---
 
-🎨 Visual Assets & Design Repositories
+## 🔍 SEO · AEO · GEO Checklist
 
-• Icon Packs: FontAwesome CDN / Lucide Architecture
-• Tailored Color Schemes: Coolors Interface / Adobe Color Maps
-• Typography Foundries: Google Web Fonts Library
+- ✅ Unique `<title>` and meta description on every page
+- ✅ One `<h1>` and a clean heading order
+- ✅ Semantic tags (`header`, `main`, `section`, `footer`)
+- ✅ Alt text on images
+- ✅ `sitemap.xml` and `robots.txt`
+- ✅ JSON-LD structured data (FAQ, Article, Organization)
+- ✅ Short, direct answers near the top (AEO)
+- ✅ Clear, factual, well-structured content (GEO)
+- ✅ Fast load, mobile-friendly, HTTPS
 
-🐙 Local Environment Repository Setup
+---
 
-Launch this repository locally onto your desktop workspace by executing the commands below:
-bash
-# Clone down the workspace source files
-git clone https://github.com
+## 📁 Repository Structure
 
-# Move execution path inside the cloned root path folder
+```
+website_maker/
+├── index.html     # Main guide site
+├── 404.html       # Custom not-found page
+├── favicon.svg    # Site icon
+└── README.md      # You are here
+```
+
+---
+
+## 🛠️ Run Locally
+
+```bash
+git clone https://github.com/wondermayank/website_maker.git
 cd website_maker
+```
 
-# Initialize local browser view of index.html file
-# (Or right-click inside VSCode workspace and open via Live Server)
-open index.html
-Use code with caution.
-Made with ⚡ by @wondermayank
+Then open `index.html` in your browser, or use **Live Server** in VS Code.
+
+---
+
+## 🤝 Contributing
+
+Found a broken link or want to add a free tool?
+
+1. Fork the repo
+2. Create a branch: `git checkout -b add-new-tool`
+3. Commit and push your changes
+4. Open a Pull Request
+
+---
+
+## 📬 Links
+
+- 🌐 Live: [make.wondermayank.in](https://make.wondermayank.in)
+- 👤 Author: [@wondermayank](https://github.com/wondermayank)
+
+---
+
+<div align="center">
+
+Made with ⚡ by **Thunder** ([@wondermayank](https://github.com/wondermayank))
+
+If this helped you, drop a ⭐
+
+</div>
