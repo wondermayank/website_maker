@@ -5,7 +5,6 @@
 **Learn web development, pick free tools, and ship a professional website — for ₹0.**
 
 [![Live Site](https://img.shields.io/badge/Live-make.wondermayank.in-573AFC?style=for-the-badge)](https://make.wondermayank.in)
-[![Mirror](https://img.shields.io/badge/Mirror-Vercel-000000?style=for-the-badge&logo=vercel)](https://website-maker-pied.vercel.app)
 ![Stars](https://img.shields.io/github/stars/wondermayank/website_maker?style=for-the-badge)
 ![License](https://img.shields.io/badge/Free-to%20use-22c55e?style=for-the-badge)
 
