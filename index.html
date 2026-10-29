@@ -1834,7 +1834,7 @@ body{overflow-x:clip}
     label(bW,w);label(bT,!w);
     web.hidden=!w;tg.hidden=w;panel.hidden=false;cW.classList.add('on');cT.classList.add('on');
     title.textContent=w?'Website topics':'Telegram topics';
-    full.href=w?'/website.html':'/telegram.html';
+    full.href=w?'/website':'/telegram';
     q.value='';q.dispatchEvent(new Event('input'));
     var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
     panel.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});
