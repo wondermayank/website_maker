@@ -1665,6 +1665,15 @@ body{overflow-x:clip}
 .t-acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
 .t-acts .btn svg,.vc-acts .btn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .t-acts .btn[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.tg-group{scroll-margin-top:96px}
+.vc-jump{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+.vc-jump a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:99px;background:var(--surface);box-shadow:var(--e-sm);color:var(--ink);font-weight:700;font-size:14px}
+.vc-jump a:hover{background:var(--primary-soft);color:var(--primary)}
+.vc-btn.lock{cursor:not-allowed;opacity:.78;box-shadow:var(--e-sm);background:var(--canvas-deep)}
+.vc-btn.lock:hover{transform:none;box-shadow:var(--e-sm)}
+.vc-btn.lock>svg.vc-big{stroke:var(--muted)}
+.vc-go.off{color:var(--muted)}.vc-go.off svg{animation:none;stroke:var(--muted)}
+.lock-badge{position:absolute;top:18px;right:18px;padding:6px 12px;border-radius:99px;background:var(--primary-soft);color:var(--primary);font-size:11.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
 @media(max-width:860px){.t-layout{grid-template-columns:1fr;gap:18px}.toc{position:static}}
 @media(max-width:640px){.pn{grid-template-columns:1fr}.pn a:last-child{text-align:left}.tp .cx-t b,.tp .cx-t small{padding-right:0}.tp .cx{padding-bottom:62px}.tp-act{top:auto;bottom:12px;right:12px}}
 
@@ -1853,7 +1862,7 @@ var I={en:{lv_B:'Beginner',lv_M:'Medium',lv_A:'Advanced',min:'min read',unver:'N
  none:'No topic matches. Try fewer words or clear the filters.',h1a:'Build for free,',h1b:'your way',sub:'Pick what you want to make. Each topic opens as a short guide with free tools and steps.',
  badge:'Free guides for builders',topics:'topics',done:'done',home:'Back to home',save:'Save',mark:'Mark as done',helpful:'Was this guide helpful?',thanks:'Thanks for the feedback',
  toc:'On this page',prev:'Previous',next:'Next',related:'Related topics',copy:'Copy',copied2:'Copied',soon:'This guide is being written. Use the button below to ask for it sooner.',
- all_w:'Open website page',all_t:'Open telegram page'},
+ all_w:'Open website page',all_t:'Open telegram page',soonb:'Coming soon',c5b:'Topic to Working Website',c5s:'Turn any topic into a free, professional working website',c6b:'Master Claude',c6s:'Skills, plugins and commands'},
  hi:{lv_B:'शुरुआती',lv_M:'मध्यम',lv_A:'एडवांस्ड',min:'मिनट पढ़ें',unver:'अभी जाँचा नहीं गया',show:'विषय देखें',showing:'विषय दिख रहे हैं',click:'यहाँ क्लिक करें',
  ph:'सभी विषय खोजें, जैसे bot, free, UPI',tab_all:'सभी',tab_website:'वेबसाइट',tab_telegram:'टेलीग्राम',saved:'सेव किए',hidedone:'पूरे छुपाएँ',clear:'फ़िल्टर हटाएँ',
  lab_lv:'स्तर',lab_tag:'टैग',lab_show:'दिखाएँ',lab_in:'कहाँ',t_n:'क्रेडिट कार्ड नहीं',t_i:'भारत के लिए',t_s:'स्टूडेंट',t_o:'ओपन सोर्स',
@@ -1861,7 +1870,7 @@ var I={en:{lv_B:'Beginner',lv_M:'Medium',lv_A:'Advanced',min:'min read',unver:'N
  none:'कोई विषय नहीं मिला। कम शब्द लिखें या फ़िल्टर हटाएँ।',h1a:'फ्री में बनाओ,',h1b:'अपने तरीके से',sub:'चुनो क्या बनाना है। हर विषय एक छोटी गाइड है, फ्री टूल्स और स्टेप्स के साथ।',
  badge:'बिल्डर्स के लिए फ्री गाइड',topics:'विषय',done:'पूरे',home:'होम पर वापस',save:'सेव करें',mark:'पूरा हुआ',helpful:'क्या यह गाइड काम की थी?',thanks:'फीडबैक के लिए धन्यवाद',
  toc:'इस पेज पर',prev:'पिछला',next:'अगला',related:'मिलते-जुलते विषय',copy:'कॉपी',copied2:'कॉपी हुआ',soon:'यह गाइड लिखी जा रही है। जल्दी चाहिए तो नीचे बटन से बताएँ।',
- all_w:'वेबसाइट पेज खोलें',all_t:'टेलीग्राम पेज खोलें'}};
+ all_w:'वेबसाइट पेज खोलें',all_t:'टेलीग्राम पेज खोलें',soonb:'जल्द आ रहा है',c5b:'टॉपिक से चालू वेबसाइट',c5s:'किसी भी टॉपिक को फ्री और प्रोफेशनल चालू वेबसाइट में बदलें',c6b:'Claude में महारत',c6s:'स्किल, प्लगइन और कमांड'}};
 var lang=ls('ts_vc_lang','en');if(lang!=='hi')lang='en';
 function T(k){return I[lang][k]||I.en[k]||''}
 function applyLang(){document.documentElement.lang=lang==='hi'?'hi':'en-IN';
