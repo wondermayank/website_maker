@@ -1,0 +1,50 @@
+India
+zoho-sites.webp       https://www.zoho.com/sites/
+antideploy.webp       https://antideploy.com/
+ 
+Popular
+cloudflare.webp       https://pages.cloudflare.com/
+vercel.webp           https://vercel.com/
+ 
+All free hosting
+alwaysdata.webp       https://www.alwaysdata.com/
+awardspace.webp       https://www.awardspace.com/
+boomurl.webp          https://boomurl.com/
+bubble.webp           https://bubble.io/
+dappling.webp         https://www.dappling.network/
+digitalocean.webp     https://www.digitalocean.com/pricing
+freeflarum.webp       https://freeflarum.com/
+harvis.webp           https://harvis.dev/
+koyeb.webp            https://www.koyeb.com/
+mdbgo.webp            https://mdbgo.com/
+mirin.webp            https://mirin.com/
+neocities.webp        https://neocities.org/
+netlify.webp          https://www.netlify.com/
+pagehaus.webp         https://pagehaus.app/
+pandastack.webp       https://www.pandastack.io/
+pantheon.webp         https://pantheon.io/
+qoddi.webp            https://qoddi.com/
+readthedocs.webp      https://readthedocs.org/
+render.webp           https://render.com/
+revdoku.webp          https://revdoku.com/
+shipstatic.webp       https://shipstatic.com/
+sourceforge.webp      https://sourceforge.net/
+stormkit.webp         https://www.stormkit.io/
+surge.webp            https://surge.sh/
+tilda.webp            https://tilda.cc/
+versoly.webp          https://versoly.com/
+Popular
+digitalplat.webp      https://domain.digitalplat.org/
+ 
+All free subdomains
+dnshe.webp            https://www.dnshe.com/
+duckdns.webp          https://www.duckdns.org/
+euorg.webp            https://nic.eu.org/
+freedns.webp          https://freedns.afraid.org/
+infinityfree.webp     https://www.infinityfree.com/
+intyt.webp            https://int.yt/
+isadev.webp           https://is-a.dev/
+isroot.webp           https://isroot.in/
+jsorg.webp            https://js.org/
+ppua.webp             https://nic.ua/
+ 
