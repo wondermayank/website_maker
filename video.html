@@ -760,7 +760,7 @@ body{padding-bottom:0}
       </label>
       <label class="check" for="story"><input type="checkbox" id="story" checked> <span>Storyboard first: Claude sketches every beat as still frames and waits for your OK before building.</span></label>
       <div class="copyset">
-        <h6 class="cs-t">Make a video<span>Renders an MP4</span></h6>
+        <h6 class="cs-t">Make a video<span>Claude codes it, renders it and gives you an MP4 with audio</span></h6>
         <div class="copy3" role="group" aria-label="Copy the prompt to make a video">
         <button class="btn btn-primary cp-btn" type="button" id="copy-plain"><span class="rec">Recommended</span><span class="cb-main"><span class="cb-t">Without voice</span><small>Music and sound, reference included</small><small class="sz" id="sz-plain"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
         <button class="btn btn-primary cp-btn" type="button" id="copy-vo"><span class="cb-main"><span class="cb-t">With voice</span><small>Spoken with TTS, timed to the words</small><small class="sz" id="sz-vo"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
@@ -2536,6 +2536,7 @@ const INDIAN_FAMILY = 'Indian Folk Art';
 
 // ============================ PROMPT TEMPLATE ============================
 const LIB = 'Wondermayank Style Library';
+const RENDER_PY = "import asyncio, base64, subprocess, sys, os, wave\nfrom playwright.async_api import async_playwright\n\nHTML = os.path.abspath(sys.argv[1])          # the finished animation page\nOUT = sys.argv[2] if len(sys.argv) > 2 else 'video.mp4'\nVOICE = sys.argv[3] if len(sys.argv) > 3 else None   # optional voice.mp3 (voice mode)\nFPS = 30\nLIMIT = int(os.environ.get('MAXFRAMES', '0'))        # test only: render the first N frames\n\nasync def main():\n    async with async_playwright() as p:\n        b = await p.chromium.launch(args=['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader',\n                                          '--ignore-gpu-blocklist', '--autoplay-policy=no-user-gesture-required'])\n        pg = await b.new_page(viewport={'width': 1000, 'height': 1400})\n        # optional local copy of three.js when the CDN is not reachable: THREE_JS=/path/to/three.min.js\n        if os.environ.get('THREE_JS'):\n            await pg.route('**/three.min.js', lambda r: r.fulfill(path=os.environ['THREE_JS'], content_type='application/javascript'))\n        pg.on('pageerror', lambda e: print('PAGE ERROR:', e))\n        await pg.goto('file://' + HTML)\n        await pg.wait_for_function('window.__ready === true', timeout=60000)\n        dur = await pg.evaluate('window.DURATION')\n        n = int(round(dur * FPS))\n        if LIMIT: n = min(n, LIMIT)\n        # 1) audio: effects and music rendered offline, written as a 48 kHz stereo wav\n        vo = 'true' if VOICE else 'false'\n        b64 = await pg.evaluate('''async (vo) => {\n          const r = await SFX.render(window.scoreSound, window.DURATION, 48000, { voiceover: vo });\n          const k = r.peak > 0.89 ? 0.89 / r.peak : 1, i16 = new Int16Array(r.inter.length);\n          for (let i = 0; i < i16.length; i++) i16[i] = Math.max(-32768, Math.min(32767, Math.round(r.inter[i] * k * 32767)));\n          const u8 = new Uint8Array(i16.buffer); let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000));\n          return btoa(s); }''', VOICE is not None)\n        with wave.open('fx.wav', 'wb') as w:\n            w.setnchannels(2); w.setsampwidth(2); w.setframerate(48000); w.writeframes(base64.b64decode(b64))\n        # 2) picture: seek every frame, grab the canvas, pipe PNGs into ffmpeg\n        ff = subprocess.Popen(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', str(FPS), '-i', '-',\n                               '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-preset', 'medium', '-crf', '18', 'silent.mp4'], stdin=subprocess.PIPE)\n        for i in range(n):\n            data = await pg.evaluate('(t) => { window.seek(t); return (document.getElementById(\"stage\") || document.querySelector(\"canvas\")).toDataURL(\"image/png\").split(\",\")[1]; }', i / FPS)\n            ff.stdin.write(base64.b64decode(data))\n            if i % 60 == 0: print(f'frame {i}/{n}', flush=True)\n        ff.stdin.close(); ff.wait(); await b.close()\n    # 3) mux: effects and music (+ the voice on top, full level) into AAC 192k, faststart\n    cmd = ['ffmpeg', '-y', '-loglevel', 'error', '-i', 'silent.mp4', '-i', 'fx.wav']\n    if VOICE:\n        cmd += ['-i', VOICE, '-filter_complex', '[2:a]aresample=48000,volume=1.0[v];[1:a][v]amix=inputs=2:duration=first:normalize=0[a]', '-map', '0:v', '-map', '[a]']\n    else:\n        cmd += ['-map', '0:v', '-map', '1:a']\n    cmd += ['-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest', '-movflags', '+faststart', OUT]\n    subprocess.run(cmd, check=True)\n    print('done', OUT)\nasyncio.run(main())\n";
 const T = {
   intro: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. Below is a complete, working reference animation in this style: its core helpers (CM), a synthesized sound kit (SFX), the style's scenes, its sound score and the player page. Treat that file as the ground truth for how this style looks, moves and sounds, and rebuild it around my content.`,
   noTopic: '[No topic yet. Ask me for my topic or script before building anything.]',
@@ -2602,15 +2603,33 @@ One self-contained HTML file (an artifact if you can), built on the reference fi
     vo ? "- Timing: the voice starts 0.2 s after the picture appears, with 0.3 s of air between sentences or speakers, and an effect never lands on top of a spoken key word." : "- Sync: every effect lands exactly on its visual beat, read from the same TL times as the picture."
   ].join('\n'),
   render: (vo) => [
-    "RENDER THE MP4 (required)",
-    "The finished piece is a real MP4 video, not only the HTML page. Make it yourself, then give it to me:",
-    "- Open the HTML in headless Chrome (playwright or puppeteer), call window.seek(i / 30) for every frame, capture the canvas and pipe the frames into ffmpeg (libx264, yuv420p, 30 fps, faststart).",
+    "MAKE THE VIDEO WITH CODE AND RENDER THE MP4 (required)",
+    "The finished piece is a real MP4 video with sound, not only the HTML page. Make it yourself with code, run the render here, then give me the .mp4 file:",
+    "- Setup: pip install playwright, then playwright install chromium; ffmpeg must be on the PATH (install it if it is missing). If the CDN is blocked in your sandbox, npm install three@0.128.0 and point the THREE_JS environment variable at node_modules/three/build/three.min.js, as the script below allows.",
+    "- Open the HTML in headless Chrome (playwright or puppeteer), call window.seek(i / 30) for every frame, capture the canvas and pipe the frames into ffmpeg (libx264, yuv420p, 30 fps, faststart). Software WebGL takes about a second per frame, so run the render in the background and poll it.",
     "- Effects and music: SFX.render(window.scoreSound, window.DURATION, 48000, { voiceover: " + (vo ? 'true' : 'false') + " }) returns interleaved stereo floats; write them to a wav.",
     vo ? "- Voice: mix the TTS voice (voice.mp3, resampled to 48 kHz) over the effects and music at full level, then mux everything into the video as AAC 192k. The voice must be heard in the MP4." : "- Mux the effects and music into the video as AAC 192k.",
     "- Check before you send: ffprobe shows a video and an audio stream, the length matches window.DURATION, and a few frames (first, middle, last) look right.",
     "- Deliver video.mp4 as a download, and also put it in video.zip so it downloads directly instead of opening in the browser. Give me the HTML file too.",
-    "- If you truly cannot run code in this chat, say so in one line, then give me the finished HTML and a render.py that makes the MP4 when I run it. Do not ask me for anything."
+    "- If you truly cannot run code in this chat, say so in one line, then give me the finished HTML and a render.py that makes the MP4 when I run it. Do not ask me for anything.",
+    "",
+    "READY-MADE RENDER SCRIPT (tested). Save it as render.py and run: python3 render.py animation.html video.mp4" + (vo ? " voice.mp3" : "") + ". It renders the effects and music with SFX.render, renders every frame, and muxes picture and audio" + (vo ? " with the voice on top" : "") + " into the MP4.",
+    "```python",
+    RENDER_PY.trim(),
+    "```"
   ].join('\n'),
+  introEngine: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. Below is a complete, working reference file: the animation engine that every style in the library is built on (core helpers CM, a synthesized sound kit SFX, the shared library helpers, a timeline, a sound score and the player page), shown with a different demo look (Clay Diorama, "How a volcano erupts"). Treat it as the ground truth for how the engine, the timeline, the player and the sound kit work, then build the "${s.name}" look from the STYLE CARD and THE STYLE below around my content. Do not build the clay volcano.`,
+  buildEngine: (s) => `WHAT TO BUILD
+One self-contained HTML file (an artifact if you can), built on the reference file below:
+- Keep the page, the player (play/pause, scrub, time, sound toggle, loop, Load voiceover${s.footage ? ', Load footage' : ''}), the CM block, the SFX block and the shared library helpers block (track, txt, chip, slam, rise, wordLine, hd, composite, cam, punch, grain, vignette and the sound helpers) unchanged. They are the engine.
+- Replace the whole demo style: the timeline TL, the scenes or world, the colours, the fonts and the sound score (scoreSound) become the "${s.name}" look from THE STYLE and the STYLE CARD. Reuse the engine's helpers; write new ones only for what this look needs.${s.canvas ? `\n- Keep the canvas at ${s.canvas} (9:16, for Shorts, Reels and TikTok).` : '\n- This style is 16:9: set STYLE.W and STYLE.H to 1280 and 720, and change the canvas width and height, the .stage aspect-ratio and the scrub bar to match. Every helper reads W and H, so they follow.'}${s.three ? '\n- This is a 3D style: keep the Three.js r128 script tag and the makeGL, lights3, M3, P3, put and proj3 helpers, and build every 3D object in code: no models or textures from the web.' : '\n- This is a 2D style: remove the Three.js script tag and the clay world (init3, pose, tiltShift) and draw on the canvas.'}${s.footage ? '\n- Add a Load footage button (an input with id footfile) wired to window.loadFootage(url), so I can drop in my own clip and see the overlay on it; until then the stand-in presenter shows where I sit in the frame.' : ''}
+- Aim for 15 to 40 seconds unless my content needs more, and set the duration in TL.D.
+- Keep window.seek(t), window.DURATION, window.scoreSound and window.SFX exposed, so the video can be rendered frame by frame.
+- Load the style's fonts from Google Fonts before the first draw, the way the reference does: ${s.fonts}.`,
+  deliverVideo: (vo) => `WHAT I WANT BACK
+- A real video file: video.mp4 (H.264 picture, AAC audio, ${vo ? 'with the spoken voice, the music and the effects mixed' : 'with the music and the effects'}), made by you with code and rendered here. Not only the HTML page.
+- video.zip with video.mp4 inside, so it downloads directly.
+- The finished HTML file too.`,
   introScratch: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. There is no reference file for this one, so you will build the whole animation engine yourself from the style card, the style rules and the sound plan below, and draw every picture element in code. Do not ask me for any file.`,
   buildScratch: (s) => `WHAT TO BUILD
 One self-contained HTML file (an artifact if you can). Build the engine yourself:
@@ -2630,16 +2649,17 @@ One self-contained HTML file (an artifact if you can). Build the engine yourself
 function buildPrompt(s, source, o) {
   const scratch = !source || !!o.lite;
   const file = o.target === 'file';
-  const intro = scratch ? T.introScratch(s) : T.intro(s);
+  const eng = !scratch && SRC_KIND[s.id] === 'engine';
+  const intro = scratch ? T.introScratch(s) : eng ? T.introEngine(s) : T.intro(s);
   const P = [file ? intro.replace('I want an animated video in the', 'I want an HTML animation in the') : intro, '', 'MY CONTENT', o.topic.trim() || T.noTopic];
   if (!o.clone) P.push('', T.noAsk);
   if (o.vo) {
     if (o.srt.trim()) P.push('', 'MY SCRIPT (pasted)', o.srt.trim(), 'Use these words as the narration. Any times in it are only a pacing guide: the real word times come from the TTS audio.');
     P.push('', T.vo.replace('{VOLINE}', s.voLine).replace('{SAVEVOICE}', file ? T.voSaveFile : T.voSaveVideo));
   }
-  P.push('', o.story ? T.story : T.direct, '', scratch ? T.buildScratch(s) : T.build(s), '', 'THE STYLE', ...s.sheet.map((l) => '- ' + l), '', T.rules.replace('{SIZES}', s.sizes).replace('{CANVAS}', s.canvas || '1280x720').replace('{DEMO}', s.demo), '', 'SOUND', ...s.sound.map((l) => '- ' + l), o.vo ? s.voMix : s.full, '- Sync is everything: the sound score reads the same TL times as the picture.', '', T.audio(!!o.vo), '', file ? T.file(!!o.vo) : T.render(!!o.vo), '',
+  P.push('', ...(file ? [] : [T.deliverVideo(!!o.vo), '']), o.story ? T.story : T.direct, '', scratch ? T.buildScratch(s) : eng ? T.buildEngine(s) : T.build(s), '', 'THE STYLE', ...s.sheet.map((l) => '- ' + l), '', T.rules.replace('{SIZES}', s.sizes).replace('{CANVAS}', s.canvas || '1280x720').replace('{DEMO}', s.demo), '', 'SOUND', ...s.sound.map((l) => '- ' + l), o.vo ? s.voMix : s.full, '- Sync is everything: the sound score reads the same TL times as the picture.', '', T.audio(!!o.vo), '', file ? T.file(!!o.vo) : T.render(!!o.vo), '',
     'STYLE CARD', `Name: ${s.name}`, `Family: ${s.family}`, `Look: ${s.look}`, `How it explains: ${s.how}`);
-  if (!scratch) P.push('', 'REFERENCE SOURCE (the complete working file)', '```html', source.trim(), '```');
+  if (!scratch) P.push('', eng ? 'REFERENCE SOURCE (the engine reference: the complete working file of the Clay Diorama style, built on the same engine as every style)' : 'REFERENCE SOURCE (the complete working file)', '```html', source.trim(), '```');
   return P.join('\n');
 }
 
@@ -2647,9 +2667,19 @@ function buildPrompt(s, source, o) {
 const $ = (id) => document.getElementById(id);
 const SRC = {};
 const styleDir = (s) => `${ASSETS}/styles/${s.id}`;
+// Every style gets a REFERENCE SOURCE. A style's own assest/styles/<id>/source.html is used when it exists; otherwise the shared
+// engine reference (assest/styles/_engine/source.html, the complete working Clay Diorama file) is used and the prompt tells Claude
+// to keep that engine and build the style's look on top of it. SRC_KIND[id] is 'own' or 'engine'.
+const SRC_KIND = {};
+const getText = (url) => fetch(url).then((r) => { if (!r.ok) throw new Error('missing source'); return r.text(); });
+let ENGINE_P = null;
+function engineSource() { return ENGINE_P || (ENGINE_P = getText(`${ASSETS}/styles/_engine/source.html`).catch((e) => { ENGINE_P = null; throw e; })); }
 function loadSource(s) {
   if (SRC[s.id]) return Promise.resolve(SRC[s.id]);
-  return fetch(`${styleDir(s)}/source.html`).then((r) => { if (!r.ok) throw new Error('missing source'); return r.text(); }).then((t) => (SRC[s.id] = t));
+  return getText(`${styleDir(s)}/source.html`)
+    .then((t) => { SRC_KIND[s.id] = 'own'; return t; })
+    .catch(() => engineSource().then((t) => { SRC_KIND[s.id] = 'engine'; return t; }))
+    .then((t) => (SRC[s.id] = t));
 }
 let toastT;
 function say(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
@@ -2764,11 +2794,11 @@ function fillSheet(i) {
   $('status').textContent = ''; $('status').classList.remove('bad'); $('fallback').hidden = true;
   Object.values(BTN).forEach((b) => { clearTimeout(b._t); setSt(b); });
   ['sz-plain', 'sz-vo', 'sz-lite', 'sz-plain-f', 'sz-vo-f', 'sz-lite-f'].forEach((id) => { $(id).textContent = ''; });
-  $('sh-note').textContent = s.scratch ? 'This style has no reference file yet, so every option includes the full build instructions and Claude builds the engine from scratch. If you add its source.html, the first two options use it.' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.';
+  $('sh-note').textContent = s.scratch ? 'Loading the reference file…' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.';
   document.title = s.name + ' | Wondermayank Make';
   try { history.replaceState(null, '', location.pathname + '#' + s.id); } catch (e) {}
   const tok = ++openTok;
-  loadSource(s).catch(() => '').then((src) => { if (tok === openTok) updateSizes(s, src); });
+  loadSource(s).catch(() => '').then((src) => { if (tok !== openTok) return; updateSizes(s, src); $('sh-note').textContent = !src ? 'No reference file was found, so every option includes the full build instructions and Claude builds the engine from scratch.' : SRC_KIND[s.id] === 'engine' ? 'This style has no reference file of its own yet, so every option includes the shared engine reference (the complete working Clay Diorama file) and Claude builds this look on top of it. Only prompt is the short version without any reference code.' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.'; });
 }
 function updateSizes(s, src) {
   const o = { topic: $('topic').value, srt: $('srt').value, story: $('story').checked };
@@ -2833,7 +2863,7 @@ function copyPrompt(kind) {
     let src = '';
     if (k !== 'lite') {
       try { src = await loadSource(s); }
-      catch (e) { if (!s.scratch) { const er = new Error(`Missing ${styleDir(s)}/source.html. Add it, or use “Only prompt”.`); er.short = 'File missing'; throw er; } }
+      catch (e) { if (!s.scratch) { const er = new Error(`Missing ${styleDir(s)}/source.html and ${ASSETS}/styles/_engine/source.html. Add either one, or use “Only prompt”.`); er.short = 'File missing'; throw er; } }
     }
     const srt = $('srt').value;
     return buildPrompt(s, src, { topic: $('topic').value, srt, vo: k === 'vo' || (k === 'lite' && srt.trim() !== ''), story: $('story').checked, lite: k === 'lite', target: file ? 'file' : 'video' });
