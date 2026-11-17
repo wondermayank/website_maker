@@ -1,0 +1,109 @@
+Put these in the same repo as index.html (make.wondermayank.in)
+
+root:
+  index.html
+  favicon.svg   (already used by your header/footer)
+
+assest/skills/<skill>/  (each folder: intro.mp4 + the file)
+  faceless-shorts/      intro.mp4 , faceless-shorts-skill.zip
+  ai-video-editor/      intro.mp4 , ai-video-editor.zip
+  thunder-hand-drawing/ intro.mp4 , thunder-hand-drawing.skill
+  thunder-story-time/   intro.mp4 , thunder-story-time.skill
+  thunder-riddle-video/ intro.mp4 , thunder-riddle-video.skill
+
+assest/styles/<id>/
+  preview.mp4  = needed for every style
+  source.html  = needed for the first 62; OPTIONAL for the new 27 (they work without it)
+
+FIRST 62 (preview.mp4 + source.html):
+  assest/styles/creator-motion/
+  assest/styles/chalk-talk/
+  assest/styles/clean-tech/
+  assest/styles/software-walkthrough/
+  assest/styles/data-story/
+  assest/styles/warm-canvas/
+  assest/styles/pop-info/
+  assest/styles/clay-diorama/
+  assest/styles/bio-glow/
+  assest/styles/cosmic-scale/
+  assest/styles/exploded-view/
+  assest/styles/low-poly-atlas/
+  assest/styles/size-lineup/
+  assest/styles/data-city/
+  assest/styles/glass-icons/
+  assest/styles/iso-cutaway/
+  assest/styles/globe-arcs/
+  assest/styles/physics-toybox/
+  assest/styles/deep-layers/
+  assest/styles/synth-grid/
+  assest/styles/product-turntable/
+  assest/styles/paper-craft/
+  assest/styles/marker-board/
+  assest/styles/blueprint/
+  assest/styles/zine-collage/
+  assest/styles/comic-panels/
+  assest/styles/parchment-map/
+  assest/styles/timeline-rail/
+  assest/styles/isotype/
+  assest/styles/evidence-board/
+  assest/styles/storybook/
+  assest/styles/pixel-quest/
+  assest/styles/terminal/
+  assest/styles/swiss-grid/
+  assest/styles/math-canvas/
+  assest/styles/tactics-board/
+  assest/styles/market-tape/
+  assest/styles/quiz-countdown/
+  assest/styles/top-5-countdown/
+  assest/styles/tier-list/
+  assest/styles/chat-story/
+  assest/styles/versus-split/
+  assest/styles/myth-or-fact/
+  assest/styles/recipe-steps/
+  assest/styles/quote-cinema/
+  assest/styles/breaking-desk/
+  assest/styles/podcast-clip/
+  assest/styles/punch-captions/
+  assest/styles/karaoke-subs/
+  assest/styles/callout-kit/
+  assest/styles/lower-thirds/
+  assest/styles/headline-backdrop/
+  assest/styles/stack-split/
+  assest/styles/sticker-pop/
+  assest/styles/glitch-pack/
+  assest/styles/doc-cinema/
+  assest/styles/vhs-camcorder/
+  assest/styles/shadow-puppets/
+  assest/styles/visual-novel/
+  assest/styles/rubber-hose-reel/
+  assest/styles/woodcut-tale/
+  assest/styles/neon-line/
+
+NEW 27 (preview.mp4, source.html optional):
+  assest/styles/pixel-diorama/
+  assest/styles/game-show/
+  assest/styles/red-paper-cut/
+  assest/styles/mid-century-cartoon/
+  assest/styles/isometric-picture-book/
+  assest/styles/impasto/
+  assest/styles/crayon-picture-book/
+  assest/styles/memphis-diorama/
+  assest/styles/scifi-sitcom-toon/
+  assest/styles/watercolour/
+  assest/styles/roman-mosaic/
+  assest/styles/sumi-e-ink/
+  assest/styles/nocturne-gouache/
+  assest/styles/botanical-plate/
+  assest/styles/art-nouveau/
+  assest/styles/golden-hour/
+  assest/styles/ghibli-style/
+  assest/styles/lippan/   (Indian section)
+  assest/styles/gond/   (Indian section)
+  assest/styles/kalighat/   (Indian section)
+  assest/styles/mandana/   (Indian section)
+  assest/styles/kalamkari/   (Indian section)
+  assest/styles/phad/   (Indian section)
+  assest/styles/rangoli/   (Indian section)
+  assest/styles/pattachitra/   (Indian section)
+  assest/styles/pichwai/   (Indian section)
+  assest/styles/tanjore/   (Indian section)
