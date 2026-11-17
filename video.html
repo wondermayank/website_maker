@@ -519,6 +519,9 @@ dialog#sheet::backdrop{background:var(--scrim);backdrop-filter:blur(3px)}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px;color:var(--body-c)}
 .check input{width:18px;height:18px;margin-top:3px;accent-color:var(--primary);flex:none}
 .copy3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.copyset{display:grid;gap:14px}
+.cs-t{margin:0;font-size:16px;font-weight:700;color:var(--ink)}
+.cs-t span{margin-left:8px;font-size:13px;font-weight:600;color:var(--muted)}
 .copy3 .btn{width:100%;flex-direction:column;gap:2px;padding:12px 14px;min-height:64px;text-align:center}
 .copy3 .btn small{font-size:12px;font-weight:600;opacity:.8}
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--hairline);padding-top:18px}
@@ -610,7 +613,7 @@ body{padding-bottom:0}
 
 <!-- ============ STYLE LIBRARY ============ -->
 <section class="sec" id="library" aria-labelledby="lib-title"><div class="wrap">
-  <div class="sec-head"><span class="sec-kicker">Style Library</span><h2 id="lib-title">Motion graphics you can <span class="accent">copy</span></h2><p>Watch a sample, then copy its prompt: without voice, with voice, or just the prompt. Each one rebuilds the look around your content.</p></div>
+  <div class="sec-head"><span class="sec-kicker">Style Library</span><h2 id="lib-title">Motion graphics you can <span class="accent">copy</span></h2><p>Watch a sample, then copy its prompt: without voice, with voice, or just the prompt, to make an MP4 video or to add the animation to a file. Each one rebuilds the look around your content.</p></div>
   <div class="lib-bar"><div class="dd" id="dd">
     <button class="dd-btn" type="button" id="ddBtn" aria-haspopup="listbox" aria-expanded="false" aria-controls="ddList"><span class="dd-label">Family</span><b id="ddCur">All</b><span class="dd-n" id="ddN"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
     <div class="dd-list" id="ddList" role="listbox" aria-label="Filter by family" hidden></div>
@@ -752,14 +755,25 @@ body{padding-bottom:0}
       <label class="field" for="topic">Topic or script
         <textarea class="input" id="topic" placeholder="e.g. How to land your first client with AI automations"></textarea>
       </label>
-      <label class="field" for="srt">Voiceover timing (optional)
-        <textarea class="input" id="srt" placeholder="Paste a word-level SRT or word timestamps. Used by “With voice”. Leave it empty and Claude will ask for it."></textarea>
+      <label class="field" for="srt">Script or timing (optional)
+        <textarea class="input" id="srt" placeholder="Optional: paste your own narration script or SRT. Used by “With voice”. Leave it empty and Claude writes the script from your topic and speaks it with text to speech."></textarea>
       </label>
       <label class="check" for="story"><input type="checkbox" id="story" checked> <span>Storyboard first: Claude sketches every beat as still frames and waits for your OK before building.</span></label>
-      <div class="copy3" role="group" aria-label="Copy the prompt">
+      <div class="copyset">
+        <h6 class="cs-t">Make a video<span>Renders an MP4</span></h6>
+        <div class="copy3" role="group" aria-label="Copy the prompt to make a video">
         <button class="btn btn-primary cp-btn" type="button" id="copy-plain"><span class="rec">Recommended</span><span class="cb-main"><span class="cb-t">Without voice</span><small>Music and sound, reference included</small><small class="sz" id="sz-plain"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
-        <button class="btn btn-primary cp-btn" type="button" id="copy-vo"><span class="cb-main"><span class="cb-t">With voice</span><small>Timed to your narration</small><small class="sz" id="sz-vo"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
-        <button class="btn btn-secondary cp-btn" type="button" id="copy-lite"><span class="cb-main"><span class="cb-t">Only prompt</span><small>Lightest: attach source.html yourself</small><small class="sz" id="sz-lite"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        <button class="btn btn-primary cp-btn" type="button" id="copy-vo"><span class="cb-main"><span class="cb-t">With voice</span><small>Spoken with TTS, timed to the words</small><small class="sz" id="sz-vo"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        <button class="btn btn-secondary cp-btn" type="button" id="copy-lite"><span class="cb-main"><span class="cb-t">Only prompt</span><small>Lightest: style rules only, no reference code</small><small class="sz" id="sz-lite"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        </div>
+      </div>
+      <div class="copyset">
+        <h6 class="cs-t">Add the animation to a file<span>Plays in your HTML page, no MP4</span></h6>
+        <div class="copy3" role="group" aria-label="Copy the prompt to add the animation to a file">
+        <button class="btn btn-primary cp-btn" type="button" id="copy-plain-f"><span class="cb-main"><span class="cb-t">Without voice</span><small>Music and sound, plays in the file</small><small class="sz" id="sz-plain-f"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        <button class="btn btn-primary cp-btn" type="button" id="copy-vo-f"><span class="cb-main"><span class="cb-t">With voice</span><small>Spoken with TTS, voice inside the file</small><small class="sz" id="sz-vo-f"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        <button class="btn btn-secondary cp-btn" type="button" id="copy-lite-f"><span class="cb-main"><span class="cb-t">Only prompt</span><small>Lightest: style rules only, no reference code</small><small class="sz" id="sz-lite-f"></small></span><span class="cb-state" aria-hidden="true"><span class="spin"></span><svg class="ic-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7"/></svg><svg class="ic-err" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="cb-msg"></span></span></button>
+        </div>
       </div>
       <p class="mnote" id="sh-note"></p>
       <div class="fallback" id="fallback" hidden>
@@ -1010,7 +1024,7 @@ const STYLES = [
     full: '- Full mix (no voiceover): keep the low pad with a soft pulse, at most about 3 sounds at once, and a short gap before the big comparison lands.',
     voMix: '- Voiceover mix: the player calls SFX.live with { voiceover: true } once narration is loaded, which keeps the pad low and plays anything marked soft at about 55%. Mark counter ticks and word ticks soft: true, keep the data plucks quiet and short, and keep "boom" for the single biggest number.',
     sheet: [
-      'Data first: use real, sourced numbers for my topic and plot them to scale (no invented values, no cropped axes that exaggerate). Put a short "Source: ..." line at the bottom left of every frame. If a figure is an estimate, say so in the narration or a label. If you cannot verify a number, ask me instead of guessing.',
+      'Data first: use real, sourced numbers for my topic and plot them to scale (no invented values, no cropped axes that exaggerate). Put a short "Source: ..." line at the bottom left of every frame. If a figure is an estimate, say so in the narration or a label. If you cannot verify a number, frame it clearly as an example instead of guessing.',
       'Surface: deep ink (#0f141c) with a faint coral glow top left and a faint teal glow bottom right, very subtle gridlines, and a vignette.',
       'Type: Archivo 800 for headlines and big numbers, IBM Plex Mono for every label, axis value, unit and the source line, and a small coral mono tag in caps above each headline. Ink #eef1f5, muted #7d8796.',
       'Color has meaning: one accent per idea. Coral for the main series, teal for supporting bars, sand (#f2c14e) for the one thing the viewer should remember. Never more than three colors on screen.',
@@ -1067,7 +1081,7 @@ const STYLES = [
       'Draw in the 680 x 383 design space and let renderAt() scale it, so the art stays crisp at any size. Keep shapes big and readable on a phone.',
       'Palette: a muted, desaturated room (sage wall #D7DCCB, warm floor #C4B79D), warm accent objects (#E07A5F, #F2CC8F, #81B29A, #6C9BB8), deep teal #2F6F73 for the idea bubble, coral #E85D4A for alerts and signs, and sunny yellow #FFD86B for tags, the iris ring and sparkles. Text is white or dark teal.',
       'One character with a strong, simple emotion (eyebrows, mouth, blinks, a sweat drop, a sigh) is the emotional anchor. It sits in the foreground with gentle parallax while the camera pushes the background.',
-      'The idea lives in a bubble: a friendly mascot or icon, a number that counts up with an eased curve, and a small pill tag. Numbers must be real or clearly framed as an example; if you cannot verify one, ask me.',
+      'The idea lives in a bubble: a friendly mascot or icon, a number that counts up with an eased curve, and a small pill tag. Numbers must be real or clearly framed as an example; if you cannot verify one, frame it clearly as an example.',
       'Motion is springy and playful: things pop in with a back-eased scale (popS), settle with a decaying wobble, the scene slides in from the sides, a dotted path draws itself and a pin drops, and the camera does one slow push. Open and close with the teal iris wipe with a yellow ring.',
       'Keep it to one scene per idea, with clear staging: setting, character reaction, the idea in the bubble, the visual proof (path, arrow or chart), then the iris closes.',
     ],
@@ -2524,16 +2538,21 @@ const INDIAN_FAMILY = 'Indian Folk Art';
 const LIB = 'Wondermayank Style Library';
 const T = {
   intro: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. Below is a complete, working reference animation in this style: its core helpers (CM), a synthesized sound kit (SFX), the style's scenes, its sound score and the player page. Treat that file as the ground truth for how this style looks, moves and sounds, and rebuild it around my content.`,
-  introLite: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. This prompt has the style card, the style rules and the sound plan, but not the reference file. I will attach the style's reference HTML file (source.html) to this chat: treat it as the ground truth for how this style looks, moves and sounds, and rebuild it around my content. If the file is not attached, ask me for it before building anything.`,
   noTopic: '[No topic yet. Ask me for my topic or script before building anything.]',
-  noTiming: '[No timing pasted yet. Before building, ask me for a word-level SRT or word timestamps of my voiceover. If I only have the audio file, offer to transcribe it into word timings.]',
-  vo: `How to use the timing:
-- Turn it into a list of words with start and end times in seconds. If the timing is per line only, spread each line's words across its span in proportion to their length.
-- Set the duration to the last word's end plus about 1.2 seconds.
-- Build the timeline (TL) from these times. {VOLINE}
-- Cut between scenes only at idea boundaries (a new step, a new claim, a reveal), never mid-word, and finish each cut just before the next idea's first spoken word.
-- Put the emphasis moves on stressed words. A counter lands at the exact moment its number is spoken.
-- Keep the player's "Load voiceover" button working so I can drop in my audio and hear it in sync.`,
+  noAsk: `NO QUESTIONS\n- Do not ask me for any file, screenshot, link, audio or other material, and do not ask me to attach anything. Everything you need is in this prompt.\n- The only thing you may ask me for is my topic or script, and only if MY CONTENT above says there is no topic yet. Ask nothing else (a storyboard OK, if one is requested below, is the only other thing you wait for). If something is unclear, make a sensible assumption, build, and list your assumptions at the end.`,
+  vo: [
+    "VOICE (TEXT TO SPEECH)",
+    "Make the voiceover yourself with text to speech. Do not ask me for audio, timing or a script.",
+    "- Script: write the narration from MY CONTENT (if it already reads like a script, speak it word for word). Short spoken sentences, plain words, about 2.5 words a second, in the same language as my content. Hindi: write Devanagari and use a Hindi voice.",
+    "- Engine: free Edge voices. pip install edge-tts, then edge_tts.Communicate(text, voice, rate=rate, boundary=\"WordBoundary\") and stream it: write the audio chunks to an mp3 and collect every WordBoundary event (offset and duration are in 100 ns units, so divide by 1e7 for seconds). If only sentence boundaries come back, spread each sentence's words across its span in proportion to their length.",
+    "- Voices: English en-IN-NeerjaNeural (narrator, default) and en-IN-PrabhatNeural (a second or male voice); Hindi hi-IN-SwaraNeural and hi-IN-MadhurNeural. Rate -10% for kids' content, +0% otherwise.",
+    "- If edge-tts cannot reach the internet, use any other TTS you can run here (espeak-ng, piper, pyttsx3). If none works, build the video on an estimated timeline (about 2.5 words a second), render it without voice and tell me in one line that the voice is missing and why.",
+    "- Timing: convert each piece to wav (ffmpeg, 24 kHz mono). Start the voice with 0.2 s of silence so the picture settles before the first word, and leave 0.3 s between sentences or speakers. Word times = the boundary times plus those offsets. Set the duration to the last word's end plus about 1.2 seconds.",
+    "- Build the timeline (TL) from these word times. {VOLINE}",
+    "- Cut between scenes only at idea boundaries (a new step, a new claim, a reveal), never mid-word, and finish each cut just before the next idea's first spoken word.",
+    "- Put the emphasis moves on stressed words. A counter lands at the exact moment its number is spoken. If the style shows captions, light up the current word as it is spoken.",
+    "- {SAVEVOICE}"
+  ].join('\n'),
   story: `STORYBOARD FIRST
 Before building, show me a storyboard and wait for my OK:
 - One HTML page (an artifact if you can) with a grid of 6 to 10 panels, one per beat. Draw each panel on a canvas with the reference's own helpers, scene drawing and finishing pass, so the stills already look like the finished piece. No animation or sound yet.
@@ -2555,12 +2574,47 @@ One self-contained HTML file (an artifact if you can), built on the reference fi
 - It will be watched on phones: at {CANVAS} {SIZES}. Fill the frame.
 - Keep each frame fast, well under 50 ms.
 - Give my topic its own demo content; do not reuse the reference's story ("{DEMO}") unless my content asks for it.`,
-  render: `IF YOU CAN RUN CODE
-Render an MP4: open the file in headless Chrome, call window.seek(i / 30) for every frame, capture the canvas and pipe the frames into ffmpeg. Render the effects with SFX.render(window.scoreSound, window.DURATION, 48000, { voiceover: false }), which returns interleaved stereo floats, and mux them in. With a voiceover, render the effects with { voiceover: true } and mix them under my audio file.`,
-  introScratch: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. This style has no reference file, so you will build the whole animation engine yourself from the style card, the style rules and the sound plan below, and draw every picture element in code.`,
+  voSaveVideo: "Save the voice as voice.mp3 and load it into the player automatically (embed it as a data URI if it is small), and keep the player's Load voiceover button working.",
+  voSaveFile: "Embed the voice in the HTML as a data URI (a minute of speech is about 1 MB) so the file speaks wherever it is opened, load it into the player automatically, and keep the Load voiceover button working. If it is too big to embed, save it as voice.mp3 beside the HTML and load it from there.",
+  file: (vo) => [
+    "ADD IT TO A FILE (HTML, not a video)",
+    "The result lives in an HTML file and plays in the browser. Do not render an MP4 unless I ask for one.",
+    "- My page: if I attached or pasted my own HTML page with this message, add the animation into it as one self-contained block and leave the rest of my file exactly as it is (same content, styles and scripts). Put the block where it fits the page (for example under the first heading), or where MY CONTENT says.",
+    "- No file from me: build one standalone HTML file with a simple page around the animation. Never ask me for a file.",
+    "- Safe to drop in: wrap the canvas in a container with its own id, prefix every CSS class and id (for example wm-), keep the JavaScript inside one function so it cannot clash with my page, scale the canvas to the container width while the internal size stays fixed, and load the fonts the style needs without changing my page's own fonts.",
+    "- Player: play and pause, a sound toggle, replay and a thin progress bar. It starts when scrolled into view (IntersectionObserver) and pauses when off screen. Browsers block sound until a tap, so start with the sound off and show a clear Tap for sound button" + (vo ? " that also starts the voice from the beginning." : "."),
+    "- Respect prefers-reduced-motion: show one still frame with a Play button instead of autoplaying.",
+    "- Keep window.seek(t), window.DURATION, window.scoreSound and window.SFX exposed. If my page already uses those names, put them under window.WM instead and tell me.",
+    "- Check before you send: no console errors, seek to the start, the middle and the end and make sure every frame draws, and the rest of the page still works.",
+    "- Deliver the finished file as a download (my page with the animation added, or the standalone one) and list in a few lines what you changed or added."
+  ].join('\n'),
+  audio: (vo) => [
+    "AUDIO STYLE (on top of this style's own SOUND list)",
+    "- Feel: clean, friendly and light. Sound helps the picture and never crowds it. Choose the music mood to match the look in the STYLE CARD.",
+    vo ? "- Voice: a warm, clear, friendly teacher voice at an easy pace (about 150 words a minute, a little slower for kids' content). It is always the loudest and clearest thing in the mix." : "- No voice: the music and the effects carry the video, so give the beats a clear rhythm and give each reveal its own sound.",
+    "- Effects: small synthesized sounds, no downloads and no licences. Reference recipes (use the SFX kit's closest names: tick, chime, pop, sparkle; build any missing one with Web Audio):",
+    "  - tick: a very short blip, about 1.5 kHz with a soft 300 Hz thump, 0.09 s. Once a second on any countdown.",
+    "  - ding: a bell at 880 Hz plus a quieter 1320 Hz partial and soft harmonics, ringing out for about 1.4 s. For a correct answer, a reveal or a result.",
+    "  - pop: a quick upward sweep from about 300 Hz to 1 kHz in 0.18 s. Whenever a card, label, node or item appears.",
+    "  - tada: a rising four-note arpeggio, C5 E5 G5 C6, 0.11 s apart. The final payoff, with the confetti or the biggest reveal.",
+    "- Music: a soft looping bed built in code (a simple chord loop or pad, no files)" + (vo ? ", at low volume (about 12 to 15% of full scale) and dipping a little more under every sentence." : ", at a moderate volume (about 25 to 30% of full scale) with a clear rhythm."),
+    "- Mix: effects sit below the voice and the music sits lowest; mark small effects soft: true; never more than about 3 sounds at once; leave one or two beats of near-silence before the final payoff; nothing clips (peak about -1 dBFS, final mix around -14 LUFS).",
+    vo ? "- Timing: the voice starts 0.2 s after the picture appears, with 0.3 s of air between sentences or speakers, and an effect never lands on top of a spoken key word." : "- Sync: every effect lands exactly on its visual beat, read from the same TL times as the picture."
+  ].join('\n'),
+  render: (vo) => [
+    "RENDER THE MP4 (required)",
+    "The finished piece is a real MP4 video, not only the HTML page. Make it yourself, then give it to me:",
+    "- Open the HTML in headless Chrome (playwright or puppeteer), call window.seek(i / 30) for every frame, capture the canvas and pipe the frames into ffmpeg (libx264, yuv420p, 30 fps, faststart).",
+    "- Effects and music: SFX.render(window.scoreSound, window.DURATION, 48000, { voiceover: " + (vo ? 'true' : 'false') + " }) returns interleaved stereo floats; write them to a wav.",
+    vo ? "- Voice: mix the TTS voice (voice.mp3, resampled to 48 kHz) over the effects and music at full level, then mux everything into the video as AAC 192k. The voice must be heard in the MP4." : "- Mux the effects and music into the video as AAC 192k.",
+    "- Check before you send: ffprobe shows a video and an audio stream, the length matches window.DURATION, and a few frames (first, middle, last) look right.",
+    "- Deliver video.mp4 as a download, and also put it in video.zip so it downloads directly instead of opening in the browser. Give me the HTML file too.",
+    "- If you truly cannot run code in this chat, say so in one line, then give me the finished HTML and a render.py that makes the MP4 when I run it. Do not ask me for anything."
+  ].join('\n'),
+  introScratch: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. There is no reference file for this one, so you will build the whole animation engine yourself from the style card, the style rules and the sound plan below, and draw every picture element in code. Do not ask me for any file.`,
   buildScratch: (s) => `WHAT TO BUILD
 One self-contained HTML file (an artifact if you can). Build the engine yourself:
-- A 2D canvas at ${s.canvas} (9:16, for Shorts, Reels and TikTok), scaled to fit the window while the internal size stays fixed.
+- A 2D canvas at ${s.canvas || '1280x720'}${s.canvas ? ' (9:16, for Shorts, Reels and TikTok)' : ' (16:9)'}, scaled to fit the window while the internal size stays fixed.
 - A CM helper block: rng(seed) (mulberry32), noise1(seed) and noise2(x, y) value noise, clamp, lerp, smoothstep, easeOutExpo, easeInOutCubic, easeOutBack.
 - One timeline object TL (scene start and end times, the key moments and TL.D for the duration). draw(t) is a pure function of time t and drives the whole picture.
 - A player: play/pause, scrub bar, time, sound toggle, loop and a Load voiceover button.
@@ -2568,19 +2622,24 @@ One self-contained HTML file (an artifact if you can). Build the engine yourself
 - Expose window.seek(t), window.DURATION, window.scoreSound and window.SFX, so the video can be rendered frame by frame.
 - Aim for 15 to 40 seconds unless my content needs more.
 - Load the style's fonts from Google Fonts before the first draw: ${s.fonts}.
-- Draw every element in code: no images, models or textures from the web.`,
-  noSource: 'Not included in this prompt. Attach the style\'s reference file (source.html) to this chat. If it is not attached, ask me for it before building.',
+- Draw every element in code: no images, models or textures from the web.${s.three ? ' Load Three.js r128 from cdnjs.cloudflare.com for the 3D parts.' : ''}`,
 };
-// o: { topic, srt, vo, story, lite }   lite = true leaves the reference source out
+// o: { topic, srt, vo, story, lite, clone, target }   target = 'video' (default, renders an MP4) or 'file' (animation inside an HTML file)
+// lite = true leaves the reference source out and Claude builds the engine itself.
+// No version of this prompt asks for a file: the only thing Claude may ask for is the topic, when MY CONTENT is empty.
 function buildPrompt(s, source, o) {
-  const scratch = !!s.scratch && !source;
-  const build = scratch ? T.buildScratch(s) : o.lite ? T.build(s).replace('built on the reference file below:', 'built on the reference file I attach (the style\'s source.html):') : T.build(s);
-  const P = [scratch ? T.introScratch(s) : o.lite ? T.introLite(s) : T.intro(s), '', 'MY CONTENT', o.topic.trim() || T.noTopic];
-  if (o.vo) P.push('', 'VOICEOVER TIMING', o.srt.trim() || T.noTiming, '', T.vo.replace('{VOLINE}', s.voLine));
-  P.push('', o.story ? T.story : T.direct, '', build, '', 'THE STYLE', ...s.sheet.map((l) => '- ' + l), '', T.rules.replace('{SIZES}', s.sizes).replace('{CANVAS}', s.canvas || '1280x720').replace('{DEMO}', s.demo), '', 'SOUND', ...s.sound.map((l) => '- ' + l), o.vo ? s.voMix : s.full, '- Sync is everything: the sound score reads the same TL times as the picture.', '', T.render, '',
-    'STYLE CARD', `Name: ${s.name}`, `Family: ${s.family}`, `Look: ${s.look}`, `How it explains: ${s.how}`, '',
-    ...(scratch ? [] : ['REFERENCE SOURCE' + (o.lite ? '' : ' (the complete working file)')]));
-  if (scratch) { /* the engine is described under WHAT TO BUILD */ } else if (o.lite) P.push(T.noSource); else P.push('```html', source.trim(), '```');
+  const scratch = !source || !!o.lite;
+  const file = o.target === 'file';
+  const intro = scratch ? T.introScratch(s) : T.intro(s);
+  const P = [file ? intro.replace('I want an animated video in the', 'I want an HTML animation in the') : intro, '', 'MY CONTENT', o.topic.trim() || T.noTopic];
+  if (!o.clone) P.push('', T.noAsk);
+  if (o.vo) {
+    if (o.srt.trim()) P.push('', 'MY SCRIPT (pasted)', o.srt.trim(), 'Use these words as the narration. Any times in it are only a pacing guide: the real word times come from the TTS audio.');
+    P.push('', T.vo.replace('{VOLINE}', s.voLine).replace('{SAVEVOICE}', file ? T.voSaveFile : T.voSaveVideo));
+  }
+  P.push('', o.story ? T.story : T.direct, '', scratch ? T.buildScratch(s) : T.build(s), '', 'THE STYLE', ...s.sheet.map((l) => '- ' + l), '', T.rules.replace('{SIZES}', s.sizes).replace('{CANVAS}', s.canvas || '1280x720').replace('{DEMO}', s.demo), '', 'SOUND', ...s.sound.map((l) => '- ' + l), o.vo ? s.voMix : s.full, '- Sync is everything: the sound score reads the same TL times as the picture.', '', T.audio(!!o.vo), '', file ? T.file(!!o.vo) : T.render(!!o.vo), '',
+    'STYLE CARD', `Name: ${s.name}`, `Family: ${s.family}`, `Look: ${s.look}`, `How it explains: ${s.how}`);
+  if (!scratch) P.push('', 'REFERENCE SOURCE (the complete working file)', '```html', source.trim(), '```');
   return P.join('\n');
 }
 
@@ -2704,8 +2763,8 @@ function fillSheet(i) {
   $('sh-video').src = `${styleDir(s)}/preview.mp4`;
   $('status').textContent = ''; $('status').classList.remove('bad'); $('fallback').hidden = true;
   Object.values(BTN).forEach((b) => { clearTimeout(b._t); setSt(b); });
-  ['sz-plain', 'sz-vo', 'sz-lite'].forEach((id) => { $(id).textContent = ''; });
-  $('sh-note').textContent = s.scratch ? 'This style has no reference file yet, so every option includes the full build instructions and Claude builds the engine from scratch. If you add its source.html, the first two options use it.' : 'Only prompt is the short version: it leaves out the reference code, so attach this style’s source.html to your Claude chat.';
+  ['sz-plain', 'sz-vo', 'sz-lite', 'sz-plain-f', 'sz-vo-f', 'sz-lite-f'].forEach((id) => { $(id).textContent = ''; });
+  $('sh-note').textContent = s.scratch ? 'This style has no reference file yet, so every option includes the full build instructions and Claude builds the engine from scratch. If you add its source.html, the first two options use it.' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.';
   document.title = s.name + ' | Wondermayank Make';
   try { history.replaceState(null, '', location.pathname + '#' + s.id); } catch (e) {}
   const tok = ++openTok;
@@ -2717,8 +2776,11 @@ function updateSizes(s, src) {
   if (src || s.scratch) {
     $('sz-plain').textContent = kb(buildPrompt(s, src, { ...o, vo: false, lite: false }));
     $('sz-vo').textContent = kb(buildPrompt(s, src, { ...o, vo: true, lite: false }));
+    $('sz-plain-f').textContent = kb(buildPrompt(s, src, { ...o, vo: false, lite: false, target: 'file' }));
+    $('sz-vo-f').textContent = kb(buildPrompt(s, src, { ...o, vo: true, lite: false, target: 'file' }));
   }
   $('sz-lite').textContent = kb(buildPrompt(s, '', { ...o, vo: o.srt.trim() !== '', lite: true }));
+  $('sz-lite-f').textContent = kb(buildPrompt(s, '', { ...o, vo: o.srt.trim() !== '', lite: true, target: 'file' }));
 }
 function flyIn(origin) {
   const d = $('sheet'); if (reduceMotion() || !d.animate) return;
@@ -2762,22 +2824,27 @@ function closeSheet() {
 }
 
 // ---------- copy buttons ----------
-const BTN = { plain: $('copy-plain'), vo: $('copy-vo'), lite: $('copy-lite') };
+const BTN = { plain: $('copy-plain'), vo: $('copy-vo'), lite: $('copy-lite'), 'plain-f': $('copy-plain-f'), 'vo-f': $('copy-vo-f'), 'lite-f': $('copy-lite-f') };
+// kind: plain | vo | lite = make a video (MP4); plain-f | vo-f | lite-f = add the animation to a file
 function copyPrompt(kind) {
   const s = STYLES[current];
+  const file = kind.endsWith('-f'), k = file ? kind.slice(0, -2) : kind;
   copyWithState(BTN[kind], async () => {
     let src = '';
-    if (kind !== 'lite') {
+    if (k !== 'lite') {
       try { src = await loadSource(s); }
       catch (e) { if (!s.scratch) { const er = new Error(`Missing ${styleDir(s)}/source.html. Add it, or use “Only prompt”.`); er.short = 'File missing'; throw er; } }
     }
     const srt = $('srt').value;
-    return buildPrompt(s, src, { topic: $('topic').value, srt, vo: kind === 'vo' || (kind === 'lite' && srt.trim() !== ''), story: $('story').checked, lite: kind === 'lite' });
-  }, { status: $('status'), fbWrap: $('fallback'), fbText: $('fallback-text'), ok: (kind === 'lite' && !s.scratch) ? 'Copied. Paste it into a new Claude chat and attach source.html.' : 'Copied. Paste it into a new Claude chat.' });
+    return buildPrompt(s, src, { topic: $('topic').value, srt, vo: k === 'vo' || (k === 'lite' && srt.trim() !== ''), story: $('story').checked, lite: k === 'lite', target: file ? 'file' : 'video' });
+  }, { status: $('status'), fbWrap: $('fallback'), fbText: $('fallback-text'), ok: 'Copied. Paste it into a new Claude chat.' });
 }
 $('copy-plain').addEventListener('click', () => copyPrompt('plain'));
 $('copy-vo').addEventListener('click', () => copyPrompt('vo'));
 $('copy-lite').addEventListener('click', () => copyPrompt('lite'));
+$('copy-plain-f').addEventListener('click', () => copyPrompt('plain-f'));
+$('copy-vo-f').addEventListener('click', () => copyPrompt('vo-f'));
+$('copy-lite-f').addEventListener('click', () => copyPrompt('lite-f'));
 $('sh-close').addEventListener('click', closeSheet);
 $('sh-prev').addEventListener('click', () => openSheet(current - 1));
 $('sh-next').addEventListener('click', () => openSheet(current + 1));
@@ -2835,15 +2902,15 @@ Once I approve, build one self-contained HTML file (an artifact if you can) on t
 - 15 to 40 seconds about my topic, every frame fast (well under 50 ms), text big enough to read on a phone at 1280x720.
 - Load the new fonts before the first draw, the same way the reference does.
 - Double-check any facts and numbers you show.
-If you can run code, also render it to an MP4: call window.seek(i / 30) for each frame, capture the canvas, pipe the frames into ffmpeg, and mux in the audio from SFX.render(window.scoreSound, window.DURATION, 48000, { voiceover: false }).
+Also render it to a real MP4 and give it to me as a download, following the RENDER THE MP4 section of the library prompt below, and give the new style an audio style the way its AUDIO STYLE section describes.
 
 STEP 5: GIVE ME A REUSABLE STYLE PROMPT
-Finally, write a prompt for this new style in the same format as the library prompt below (style card, the style rules, the sound rules, and what to replace or keep), so I can reuse the style for any topic in a new chat. Tell me to attach the finished HTML file as its reference source.
+Finally, write a prompt for this new style in the same format as the library prompt below (style card, the style rules, the sound rules, and what to replace or keep), so I can reuse the style for any topic in a new chat. Put the finished HTML file's full code inside that prompt, in a code block under a REFERENCE SOURCE heading, so reusing it never needs a file attached.
 
 ==================== LIBRARY PROMPT (reference only) ====================`;
 function buildClone(s, source, topic) {
   const head = CLONE.replace('[write your topic or script here, or leave blank and I\'ll ask you]', topic.trim() || '[No topic yet. Ask me for my topic before building.]');
-  return head + '\n\n' + buildPrompt(s, source, { topic: '', srt: '', vo: false, story: false, lite: false });
+  return head + '\n\n' + buildPrompt(s, source, { topic: '', srt: '', vo: false, story: false, lite: false, clone: true });
 }
 $('clone-base').innerHTML = STYLES.map((s, i) => s.scratch ? '' : `<option value="${i}">#${s.num} ${s.name}</option>`).join('');
 $('clone-copy').addEventListener('click', () => copyWithState($('clone-copy'), async () => {
