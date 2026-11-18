@@ -2618,6 +2618,7 @@ One self-contained HTML file (an artifact if you can), built on the reference fi
     RENDER_PY.trim(),
     "```"
   ].join('\n'),
+  introGen: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. Below is a complete, working starter reference for this style: the animation engine every style in the library is built on (core helpers CM, a synthesized sound kit SFX, the shared library helpers, a timeline, a sound score and the player page) with a first pass of the "${s.name}" look already in it: its palette, type, surface, motifs, text motion, cuts and sound, on a three-beat demo (title, a counting number, a takeaway). Treat it as the ground truth for how the engine, the timeline, the player and the sound kit work, then build the full "${s.name}" look from the STYLE CARD and THE STYLE below around my content, going much further than the starter does.`,
   introEngine: (s) => `I want an animated video in the "${s.name}" style (${s.family}) from the ${LIB}. Below is a complete, working reference file: the animation engine that every style in the library is built on (core helpers CM, a synthesized sound kit SFX, the shared library helpers, a timeline, a sound score and the player page), shown with a different demo look (Clay Diorama, "How a volcano erupts"). Treat it as the ground truth for how the engine, the timeline, the player and the sound kit work, then build the "${s.name}" look from the STYLE CARD and THE STYLE below around my content. Do not build the clay volcano.`,
   buildEngine: (s) => `WHAT TO BUILD
 One self-contained HTML file (an artifact if you can), built on the reference file below:
@@ -2649,8 +2650,8 @@ One self-contained HTML file (an artifact if you can). Build the engine yourself
 function buildPrompt(s, source, o) {
   const scratch = !source || !!o.lite;
   const file = o.target === 'file';
-  const eng = !scratch && SRC_KIND[s.id] === 'engine';
-  const intro = scratch ? T.introScratch(s) : eng ? T.introEngine(s) : T.intro(s);
+  const eng = !scratch && SRC_KIND[s.id] !== 'own';
+  const intro = scratch ? T.introScratch(s) : SRC_KIND[s.id] === 'gen' ? T.introGen(s) : eng ? T.introEngine(s) : T.intro(s);
   const P = [file ? intro.replace('I want an animated video in the', 'I want an HTML animation in the') : intro, '', 'MY CONTENT', o.topic.trim() || T.noTopic];
   if (!o.clone) P.push('', T.noAsk);
   if (o.vo) {
@@ -2659,7 +2660,7 @@ function buildPrompt(s, source, o) {
   }
   P.push('', ...(file ? [] : [T.deliverVideo(!!o.vo), '']), o.story ? T.story : T.direct, '', scratch ? T.buildScratch(s) : eng ? T.buildEngine(s) : T.build(s), '', 'THE STYLE', ...s.sheet.map((l) => '- ' + l), '', T.rules.replace('{SIZES}', s.sizes).replace('{CANVAS}', s.canvas || '1280x720').replace('{DEMO}', s.demo), '', 'SOUND', ...s.sound.map((l) => '- ' + l), o.vo ? s.voMix : s.full, '- Sync is everything: the sound score reads the same TL times as the picture.', '', T.audio(!!o.vo), '', file ? T.file(!!o.vo) : T.render(!!o.vo), '',
     'STYLE CARD', `Name: ${s.name}`, `Family: ${s.family}`, `Look: ${s.look}`, `How it explains: ${s.how}`);
-  if (!scratch) P.push('', eng ? 'REFERENCE SOURCE (the engine reference: the complete working file of the Clay Diorama style, built on the same engine as every style)' : 'REFERENCE SOURCE (the complete working file)', '```html', source.trim(), '```');
+  if (!scratch) P.push('', SRC_KIND[s.id] === 'gen' ? 'REFERENCE SOURCE (a complete working starter for this style, built on the shared engine)' : eng ? 'REFERENCE SOURCE (the engine reference: the complete working file of the Clay Diorama style, built on the same engine as every style)' : 'REFERENCE SOURCE (the complete working file)', '```html', source.trim(), '```');
   return P.join('\n');
 }
 
@@ -2677,7 +2678,7 @@ function engineSource() { return ENGINE_P || (ENGINE_P = getText(`${ASSETS}/styl
 function loadSource(s) {
   if (SRC[s.id]) return Promise.resolve(SRC[s.id]);
   return getText(`${styleDir(s)}/source.html`)
-    .then((t) => { SRC_KIND[s.id] = 'own'; return t; })
+    .then((t) => { SRC_KIND[s.id] = t.includes('GENERATED REFERENCE') ? 'gen' : 'own'; return t; })
     .catch(() => engineSource().then((t) => { SRC_KIND[s.id] = 'engine'; return t; }))
     .then((t) => (SRC[s.id] = t));
 }
@@ -2798,7 +2799,7 @@ function fillSheet(i) {
   document.title = s.name + ' | Wondermayank Make';
   try { history.replaceState(null, '', location.pathname + '#' + s.id); } catch (e) {}
   const tok = ++openTok;
-  loadSource(s).catch(() => '').then((src) => { if (tok !== openTok) return; updateSizes(s, src); $('sh-note').textContent = !src ? 'No reference file was found, so every option includes the full build instructions and Claude builds the engine from scratch.' : SRC_KIND[s.id] === 'engine' ? 'This style has no reference file of its own yet, so every option includes the shared engine reference (the complete working Clay Diorama file) and Claude builds this look on top of it. Only prompt is the short version without any reference code.' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.'; });
+  loadSource(s).catch(() => '').then((src) => { if (tok !== openTok) return; updateSizes(s, src); $('sh-note').textContent = !src ? 'No reference file was found, so every option includes the full build instructions and Claude builds the engine from scratch.' : SRC_KIND[s.id] === 'gen' ? 'This style uses a generated starter reference: a working file with its own palette, type, surface, motion and sound on the shared engine. Add a hand-made source.html to its folder and that is used instead. Only prompt is the short version without any reference code.' : SRC_KIND[s.id] === 'engine' ? 'This style has no reference file of its own yet, so every option includes the shared engine reference (the complete working Clay Diorama file) and Claude builds this look on top of it. Only prompt is the short version without any reference code.' : 'Only prompt is the short version: it leaves out the reference code and Claude builds the animation engine itself, so there is nothing to attach.'; });
 }
 function updateSizes(s, src) {
   const o = { topic: $('topic').value, srt: $('srt').value, story: $('story').checked };
