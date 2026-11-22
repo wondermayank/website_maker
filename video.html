@@ -369,6 +369,23 @@ html{overflow-x:clip}
 .chip[aria-pressed="true"]{background:var(--primary);color:var(--on-primary);box-shadow:var(--e-pressed)}
 .chip[aria-pressed="true"] span{color:var(--on-primary);opacity:.85}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px}
+/* family sections + arrow-and-line divider */
+#library{padding-bottom:12px}
+.lib-end{padding-bottom:8px}
+.lib-end .soon{margin:0}
+.sec.fam{padding-bottom:56px}
+.sec-div{display:flex;align-items:center;gap:18px;max-width:720px;margin:56px auto 0}
+.sec-div-line{flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--primary))}
+.sec-div-line:last-child{background:linear-gradient(270deg,transparent,var(--primary))}
+.sec-div-btn{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 6px 0 20px;border-radius:var(--radius-pill);background:var(--surface);color:var(--ink);font-size:13.5px;font-weight:700;white-space:nowrap;box-shadow:var(--e-sm);transition:transform .2s,box-shadow .2s}
+.sec-div-btn i{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--primary);color:var(--on-primary)}
+.sec-div-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;animation:secBob 1.8s ease-in-out infinite}
+.sec-div-btn:hover{transform:translateY(-2px)}
+.sec-div-btn:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+@keyframes secBob{50%{transform:translateY(3px)}}
+@media (prefers-reduced-motion:reduce){.sec-div-btn svg{animation:none}}
+@media (max-width:560px){.sec-div{gap:10px;margin-top:44px}.sec-div-btn{font-size:12.5px;padding-left:14px}}
+
 .sc{display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--radius-card);box-shadow:var(--e-md);overflow:hidden;min-width:0;transition:transform .25s var(--ease-out),box-shadow .25s}
 .sc:hover{transform:translateY(-4px);box-shadow:var(--e-lg)}
 .thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;background:var(--primary-soft);overflow:hidden;cursor:pointer}
@@ -607,7 +624,7 @@ body{padding-bottom:0}
       <a class="btn btn-primary btn-lg hx-shine" href="#library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg>Browse the styles</a>
       <a class="btn btn-secondary btn-lg" href="#skills">Get the skills</a>
     </div>
-    <div class="hx-stats"><div class="hx-stat"><strong id="st-styles">62</strong><small>styles</small></div><div class="hx-stat"><strong>5</strong><small>free skills</small></div><div class="hx-stat"><strong>3</strong><small>copy options</small></div><div class="hx-stat"><strong>0</strong><small>emails needed</small></div></div>
+    <div class="hx-stats"><div class="hx-stat"><strong id="st-styles">62</strong><small>styles</small></div><div class="hx-stat"><strong>6</strong><small>free skills</small></div><div class="hx-stat"><strong>3</strong><small>copy options</small></div><div class="hx-stat"><strong>0</strong><small>emails needed</small></div></div>
   </div>
 </section>
 
@@ -620,17 +637,13 @@ body{padding-bottom:0}
   </div>
   <label class="sq" for="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input class="sq-in" id="search" type="search" placeholder="Search styles: chalk, 3D, Indian, Shorts" autocomplete="off" aria-label="Search styles"><button class="sq-x" id="sqX" type="button" aria-label="Clear search" hidden>&times;</button></label>
   </div>
-  <div class="grid" id="grid"></div>
   <p class="empty" id="empty" hidden>No styles match that search. Try another word.</p>
   <p class="sr-only" id="resCount" aria-live="polite"></p>
-  <p class="soon">New styles land often.</p>
 </div></section>
 
-<!-- ============ INDIAN SECTION ============ -->
-<section class="sec sec-alt" id="indian" aria-labelledby="ind-title"><div class="wrap">
-  <div class="sec-head"><span class="sec-kicker">Indian section</span><h2 id="ind-title">Indian <span class="accent">folk art</span> styles</h2><p>Lippan, Gond, Kalighat, Mandana, Kalamkari, Phad, Rangoli, Pattachitra, Pichwai and Tanjore, ready to copy for your own videos.</p></div>
-  <div class="grid" id="grid-indian"></div>
-</div></section>
+<!-- ============ STYLE SECTIONS (one per family, built by renderGrid) ============ -->
+<div id="sections"></div>
+<div class="wrap lib-end"><p class="soon">New styles land often.</p></div>
 
 <!-- ============ SKILLS ============ -->
 <section class="sec" id="skills" aria-labelledby="skills-title"><div class="wrap">
@@ -694,6 +707,18 @@ body{padding-bottom:0}
         <p><strong>Short riddle, paheli and quiz videos: a hook, riddle lines, a 5-second countdown, then the answer reveal with confetti.</strong></p>
         <details class="how"><summary>How to install</summary><ol><li>Download the <code>.skill</code> file. It is a zip, so unzip it into <code>~/.claude/skills/</code> (or upload it in Claude’s Skills settings).</li><li>Start a new Claude session and describe the video you want. Claude asks which design to use before it builds anything.</li><li>Claude sets up a ready Remotion project, writes the storyboard, makes the voice and renders an MP4.</li></ol><p>Needs Node 18+, Python 3 and ffmpeg. Voices are free (Edge voices, Hindi and English). Claude installs anything missing. Designs: Sumi-e ink, Botanical plate, Roman mosaic, Paper cut.</p></details>
         <a class="btn btn-primary" href="assest/skills/thunder-riddle-video/thunder-riddle-video.skill" download="thunder-riddle-video.skill"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download the skill</a>
+      </div>
+    </div>
+    <div class="skill-card flip" id="stream-clips">
+      <div class="skill-shot">
+        <video data-src="assest/skills/stream-clips/intro.mp4" preload="metadata" playsinline></video>
+        <button class="skill-play" type="button" aria-label="Play the Stream Clips Skill video"><span class="play" aria-hidden="true"></span></button>
+      </div>
+      <div class="skill-body">
+        <h3>Stream Clips</h3>
+        <p><strong>A free Claude skill that turns long streams and recordings into short, ready-to-post vertical clips.</strong></p>
+        <details class="how"><summary>How to install</summary><ol><li>Download the <code>.zip</code> file and unzip it so the <code>stream-clips</code> folder sits in <code>~/.claude/skills/</code> (or upload the zip in Claude’s Skills settings).</li><li>Start a new Claude session and say: “Make clips from my stream” followed by the path to your video.</li><li>Claude finds the best moments, cuts them and renders each one as a short MP4.</li></ol><p>Needs Python 3 and ffmpeg. Claude installs anything missing.</p></details>
+        <a class="btn btn-primary" href="assest/skills/stream-clips/stream-clips.zip" download="stream-clips.zip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>Download the skill</a>
       </div>
     </div>
   </div>
@@ -2716,7 +2741,29 @@ async function copyWithState(btn, getText, ui) {
 let family = 'All', current = 0, query = '';
 document.querySelectorAll('[data-link]').forEach((a) => { const u = LINKS[a.dataset.link]; if (u) a.href = u; });
 $('st-styles').textContent = STYLES.length;
-const MAIN = STYLES.filter((s) => s.family !== INDIAN_FAMILY), IND = STYLES.filter((s) => s.family === INDIAN_FAMILY);
+const FAMS = [...new Set(STYLES.map((s) => s.family))];
+const famId = (f) => (f === INDIAN_FAMILY ? 'indian' : 'fam-' + f.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+const A = (t, d) => ({ title: t.replace(/\*(.+?)\*/, '<span class="accent">$1</span>'), desc: d });
+const FAM_INFO = {
+  'Kinetic Type': A('Kinetic *type* styles', 'Words that move: bold typography, clean tech and strict grid layouts that carry the whole explanation.'),
+  'Hand-Drawn': A('*Hand-drawn* boards', 'Chalk, marker and blueprint looks where every line is drawn live as the idea is explained.'),
+  'Screen and UI': A('*Screen* and UI', 'Software walkthroughs with windows, cursors and callouts that show exactly where to click.'),
+  'Data': A('*Data* and charts', 'Charts, timelines, isotype, maths, tactics and market tape for numbers that need to be seen.'),
+  'Talking Head': A('*Talking head* canvas', 'A warm, simple canvas for videos where a person talks straight to the camera.'),
+  'Illustrated': A('*Illustrated* styles', 'Pop info, paper craft, zines, comics, maps, evidence boards and picture books.'),
+  '3D': A('*3D* worlds', 'Three.js scenes: clay, glow, cosmic scale, exploded views, cities, globes and turntables.'),
+  'Retro': A('*Retro* screens', 'Pixel quests and terminal windows with that old-computer feel.'),
+  'Shorts Format': A('*Shorts* formats', 'Ready-made vertical formats: countdowns, tier lists, chat stories, versus splits, quizzes and more.'),
+  'Edit Overlay': A('Edit *overlays*', 'Captions, callouts, lower thirds, glitch packs and stickers to lay over your own footage.'),
+  'Character Story': A('*Character* stories', 'Shadow puppets, visual novels, rubber-hose reels, woodcuts and neon lines for story-led videos.'),
+  'Diorama': A('*Diorama* scenes', 'Pixel, isometric and Memphis dioramas that build a tiny world around your topic.'),
+  'Paper and Craft': A('*Paper* and craft', 'Layered cut-paper scenes with real depth and soft shadows.'),
+  'Cartoon': A('*Cartoon* looks', 'Mid-century and sci-fi sitcom cartoon styles with bold shapes and flat colour.'),
+  'Painted': A('*Painted* styles', 'Impasto, watercolour, gouache, golden hour and Ghibli-style painted frames.'),
+  'Classic Art': A('*Classic art* styles', 'Roman mosaic, sumi-e ink, botanical plates and Art Nouveau for a gallery feel.'),
+  [INDIAN_FAMILY]: A('Indian *folk art* styles', 'Lippan, Gond, Kalighat, Mandana, Kalamkari, Phad, Rangoli, Pattachitra, Pichwai and Tanjore, ready to copy for your own videos.'),
+};
+const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg>';
 const hay = (s) => s._h || (s._h = (s.name + ' ' + s.family + ' ' + s.look + ' ' + s.id.replace(/-/g, ' ') + ' ' + (s.tall ? 'vertical 9:16 shorts reels' : 'wide 16:9 landscape')).toLowerCase());
 const BASE_TITLE = document.title, CANON = 'https://make.wondermayank.in/video';
 const USE_POSTERS = false; // set true once each style folder has a poster.webp
@@ -2724,7 +2771,7 @@ const reduceMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)')
 const touchOnly = window.matchMedia('(hover: none)').matches;
 
 function renderFilters() {
-  const fams = ['All', ...new Set(MAIN.map((s) => s.family)), INDIAN_FAMILY];
+  const fams = ['All', ...FAMS];
   const cnt = (f) => (f === 'All' ? STYLES.length : STYLES.filter((s) => s.family === f).length);
   const list = $('ddList'), btn = $('ddBtn');
   $('ddCur').textContent = family; $('ddN').textContent = cnt(family);
@@ -2754,13 +2801,27 @@ function renderGrid() {
   lazy.disconnect(); vis.disconnect();
   const q = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
   const hit = (s) => !q.length || q.every((w) => hay(s).includes(w));
-  const a = MAIN.filter((s) => (family === 'All' || s.family === family) && hit(s));
-  const b = IND.filter((s) => (family === 'All' || family === INDIAN_FAMILY) && hit(s));
-  fillGrid($('grid'), a); fillGrid($('grid-indian'), b);
-  $('indian').hidden = !b.length;
-  $('empty').hidden = !!(a.length || b.length);
-  $('resCount').textContent = (a.length + b.length) + ' styles shown';
+  const groups = FAMS.filter((f) => family === 'All' || f === family).map((f) => ({ f, list: STYLES.filter((s) => s.family === f && hit(s)) })).filter((g) => g.list.length);
+  const box = $('sections');
+  box.innerHTML = groups.map((g, i) => {
+    const id = famId(g.f), info = FAM_INFO[g.f] || A(g.f + ' *styles*', ''), n = g.list.length;
+    const nx = groups[i + 1], goId = nx ? famId(nx.f) : 'skills', goName = nx ? nx.f : 'Free skills';
+    const alt = (groups.length - 1 - i) % 2 === 0;
+    return `<section class="sec fam${alt ? ' sec-alt' : ''}" id="${id}" aria-labelledby="${id}-t"><div class="wrap">
+  <div class="sec-head"><span class="sec-kicker">Section ${String(FAMS.indexOf(g.f) + 1).padStart(2, '0')} · ${n} ${n === 1 ? 'style' : 'styles'}</span><h2 id="${id}-t">${info.title}</h2>${info.desc ? `<p>${info.desc}</p>` : ''}</div>
+  <div class="grid"></div>
+  <div class="sec-div"><span class="sec-div-line" aria-hidden="true"></span><button class="sec-div-btn" type="button" data-go="${goId}" aria-label="Next section: ${goName}"><span>Next: ${goName}</span><i>${ARROW}</i></button><span class="sec-div-line" aria-hidden="true"></span></div>
+</div></section>`;
+  }).join('');
+  box.querySelectorAll('.fam').forEach((sec, i) => fillGrid(sec.querySelector('.grid'), groups[i].list));
+  const total = groups.reduce((t, g) => t + g.list.length, 0);
+  $('empty').hidden = !!total;
+  $('resCount').textContent = total + ' styles shown';
 }
+$('sections').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-go]'); if (!b) return;
+  const t = document.getElementById(b.dataset.go); if (t) t.scrollIntoView({ behavior: reduceMotion() ? 'auto' : 'smooth', block: 'start' });
+});
 function fillGrid(box, list) {
   box.innerHTML = list.map((s) => `
     <article class="sc">
